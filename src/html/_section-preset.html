@@ -1,0 +1,277 @@
+<section class="card" id="section-preset">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+        </svg>
+        <h2>Application / Preset</h2>
+        <span class="hint">Auto-configure la stack</span>
+    </div>
+    <div class="card-body">
+        <div class="preset-grid" role="radiogroup" aria-label="Sélection du preset d'application">
+            <label class="preset-card active" data-preset="none">
+                <input type="radio" name="preset" value="none" checked aria-checked="true" />
+                <span class="preset-icon">—</span>
+                <span class="preset-name">Manuel</span>
+                <span class="preset-desc">Config libre</span>
+            </label>
+            <label class="preset-card" data-preset="wordpress">
+                <input type="radio" name="preset" value="wordpress" aria-checked="false" />
+                <span class="preset-icon">W</span>
+                <span class="preset-name">WordPress</span>
+                <span class="preset-desc">PHP + MySQL</span>
+            </label>
+            <label class="preset-card" data-preset="laravel">
+                <input type="radio" name="preset" value="laravel" aria-checked="false" />
+                <span class="preset-icon">L</span>
+                <span class="preset-name">Laravel</span>
+                <span class="preset-desc">PHP + DB + Redis</span>
+            </label>
+            <label class="preset-card" data-preset="symfony">
+                <input type="radio" name="preset" value="symfony" aria-checked="false" />
+                <span class="preset-icon">S</span>
+                <span class="preset-name">Symfony</span>
+                <span class="preset-desc">PHP + DB</span>
+            </label>
+            <label class="preset-card" data-preset="nextjs">
+                <input type="radio" name="preset" value="nextjs" aria-checked="false" />
+                <span class="preset-icon">N</span>
+                <span class="preset-name">Next.js</span>
+                <span class="preset-desc">React SSR</span>
+            </label>
+            <label class="preset-card" data-preset="nestjs">
+                <input type="radio" name="preset" value="nestjs" aria-checked="false" />
+                <span class="preset-icon">Ns</span>
+                <span class="preset-name">Nest.js</span>
+                <span class="preset-desc">Node API</span>
+            </label>
+            <label class="preset-card" data-preset="angular">
+                <input type="radio" name="preset" value="angular" aria-checked="false" />
+                <span class="preset-icon">Ng</span>
+                <span class="preset-name">Angular</span>
+                <span class="preset-desc">SPA + Nginx</span>
+            </label>
+            <label class="preset-card" data-preset="django">
+                <input type="radio" name="preset" value="django" aria-checked="false" />
+                <span class="preset-icon">Dj</span>
+                <span class="preset-name">Django</span>
+                <span class="preset-desc">Python + Postgres</span>
+            </label>
+            <label class="preset-card" data-preset="flask">
+                <input type="radio" name="preset" value="flask" aria-checked="false" />
+                <span class="preset-icon">Fl</span>
+                <span class="preset-name">Flask</span>
+                <span class="preset-desc">Python micro</span>
+            </label>
+            <label class="preset-card" data-preset="springboot">
+                <input type="radio" name="preset" value="springboot" aria-checked="false" />
+                <span class="preset-icon">Sb</span>
+                <span class="preset-name">Spring Boot</span>
+                <span class="preset-desc">Java + DB</span>
+            </label>
+        </div>
+
+        <!-- Preset sub-options -->
+        <div class="preset-options" id="presetOptions-wordpress" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="wpDbEngine">Base de données</label>
+                    <select id="wpDbEngine">
+                        <option value="mysql" selected>MySQL</option>
+                        <option value="mariadb">MariaDB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-laravel" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="laravelVersion">Version Laravel</label>
+                    <select id="laravelVersion">
+                        <option value="10">10 LTS</option>
+                        <option value="11" selected>11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="laravelStarter">Starter Kit</label>
+                    <select id="laravelStarter">
+                        <option value="none" selected>Aucun</option>
+                        <option value="breeze-react">Breeze + React</option>
+                        <option value="breeze-vue">Breeze + Vue</option>
+                        <option value="breeze-livewire">Breeze + Livewire</option>
+                        <option value="jetstream-livewire">Jetstream + Livewire</option>
+                        <option value="jetstream-inertia-react">Jetstream + Inertia (React)</option>
+                        <option value="jetstream-inertia-vue">Jetstream + Inertia (Vue)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="laravelDb">Base de données</label>
+                    <select id="laravelDb">
+                        <option value="mysql" selected>MySQL</option>
+                        <option value="mariadb">MariaDB</option>
+                        <option value="postgres">PostgreSQL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-symfony" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="symfonyVersion">Version Symfony</label>
+                    <select id="symfonyVersion">
+                        <option value="6.4">6.4 LTS</option>
+                        <option value="7.0">7.0</option>
+                        <option value="7.1">7.1</option>
+                        <option value="7.2" selected>7.2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="symfonyDb">Base de données</label>
+                    <select id="symfonyDb">
+                        <option value="postgres" selected>PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="mariadb">MariaDB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-nextjs" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nextjsDb">Base de données</label>
+                    <select id="nextjsDb">
+                        <option value="none" selected>Aucune</option>
+                        <option value="postgres">PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="mongo">MongoDB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-nestjs" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nestjsDb">Base de données</label>
+                    <select id="nestjsDb">
+                        <option value="postgres" selected>PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="mongo">MongoDB</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nestjsOrm">ORM</label>
+                    <select id="nestjsOrm">
+                        <option value="typeorm" selected>TypeORM</option>
+                        <option value="prisma">Prisma</option>
+                        <option value="mongoose">Mongoose (MongoDB)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-angular" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="angularVersion">Version Angular</label>
+                    <select id="angularVersion">
+                        <option value="17">17 (EOL)</option>
+                        <option value="18">18 (EOL)</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21" selected>21 (Latest)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-django" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="djangoVersion">Version Django</label>
+                    <select id="djangoVersion">
+                        <option value="4.2">4.2 LTS</option>
+                        <option value="5.0">5.0</option>
+                        <option value="5.1" selected>5.1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pythonVersion">Version Python</label>
+                    <select id="pythonVersion">
+                        <option value="3.10">3.10</option>
+                        <option value="3.11">3.11</option>
+                        <option value="3.12">3.12</option>
+                        <option value="3.13" selected>3.13</option>
+                        <option value="3.14">3.14 (Latest)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="djangoDb">Base de données</label>
+                    <select id="djangoDb">
+                        <option value="postgres" selected>PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-flask" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="flaskPythonVersion">Version Python</label>
+                    <select id="flaskPythonVersion">
+                        <option value="3.10">3.10</option>
+                        <option value="3.11">3.11</option>
+                        <option value="3.12">3.12</option>
+                        <option value="3.13" selected>3.13</option>
+                        <option value="3.14">3.14 (Latest)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="flaskDb">Base de données</label>
+                    <select id="flaskDb">
+                        <option value="none" selected>Aucune</option>
+                        <option value="postgres">PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="mongo">MongoDB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="preset-options" id="presetOptions-springboot" style="display: none">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="springJavaVersion">Version Java</label>
+                    <select id="springJavaVersion">
+                        <option value="11">11 LTS</option>
+                        <option value="17">17 LTS</option>
+                        <option value="21" selected>21 LTS</option>
+                        <option value="25">25 LTS (Latest)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="springDb">Base de données</label>
+                    <select id="springDb">
+                        <option value="postgres" selected>PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="mariadb">MariaDB</option>
+                        <option value="mongo">MongoDB</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="springBuild">Build tool</label>
+                    <select id="springBuild">
+                        <option value="maven" selected>Maven</option>
+                        <option value="gradle">Gradle</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

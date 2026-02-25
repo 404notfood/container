@@ -1,0 +1,39 @@
+<section class="card" id="section-ssl">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+        </svg>
+        <h2>SSL / HTTPS</h2>
+        <span class="hint" id="sslHint">Depend de l'environnement</span>
+    </div>
+    <div class="card-body">
+        <div class="radio-group" id="sslOptions">
+            <label class="radio-card active" data-value="none">
+                <input type="radio" name="ssl" value="none" checked />
+                <span class="radio-icon">--</span>
+                <span class="radio-label">Aucun (HTTP)</span>
+            </label>
+            <label class="radio-card" data-value="mkcert">
+                <input type="radio" name="ssl" value="mkcert" />
+                <span class="radio-icon">m</span>
+                <span class="radio-label">mkcert (dev)</span>
+            </label>
+            <label class="radio-card" data-value="letsencrypt">
+                <input type="radio" name="ssl" value="letsencrypt" />
+                <span class="radio-icon">L</span>
+                <span class="radio-label">Let's Encrypt</span>
+            </label>
+            <label class="radio-card" data-value="caddy-auto">
+                <input type="radio" name="ssl" value="caddy-auto" />
+                <span class="radio-icon">C</span>
+                <span class="radio-label">Caddy (auto)</span>
+            </label>
+            <label class="radio-card" data-value="traefik-auto">
+                <input type="radio" name="ssl" value="traefik-auto" />
+                <span class="radio-icon">T</span>
+                <span class="radio-label">Traefik (auto)</span>
+            </label>
+        </div>
+    </div>
+</section>

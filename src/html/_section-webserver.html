@@ -1,0 +1,51 @@
+<section class="card" id="section-webserver">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+        </svg>
+        <h2>Serveur Web</h2>
+    </div>
+    <div class="card-body">
+        <div class="radio-group" role="radiogroup" aria-label="Sélection du serveur web">
+            <label class="radio-card active" data-value="nginx">
+                <input type="radio" name="webserver" value="nginx" checked aria-checked="true" />
+                <span class="radio-icon">N</span>
+                <span class="radio-label">Nginx</span>
+                <span class="radio-desc">Haute perfo.</span>
+            </label>
+            <label class="radio-card" data-value="apache">
+                <input type="radio" name="webserver" value="apache" aria-checked="false" />
+                <span class="radio-icon">A</span>
+                <span class="radio-label">Apache</span>
+                <span class="radio-desc">.htaccess</span>
+            </label>
+            <label class="radio-card" data-value="caddy">
+                <input type="radio" name="webserver" value="caddy" aria-checked="false" />
+                <span class="radio-icon">C</span>
+                <span class="radio-label">Caddy</span>
+                <span class="radio-desc">SSL auto</span>
+            </label>
+            <label class="radio-card" data-value="traefik">
+                <input type="radio" name="webserver" value="traefik" aria-checked="false" />
+                <span class="radio-icon">T</span>
+                <span class="radio-label">Traefik</span>
+                <span class="radio-desc">Microservices</span>
+            </label>
+            <label class="radio-card" data-value="none">
+                <input type="radio" name="webserver" value="none" aria-checked="false" />
+                <span class="radio-icon">—</span>
+                <span class="radio-label">Aucun</span>
+                <span class="radio-desc">Sans proxy</span>
+            </label>
+        </div>
+        <div class="nginx-socket-option" id="nginxSocketOption">
+            <label class="toggle-row">
+                <input type="checkbox" id="enableNginxSocket" class="toggle-input" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Nginx : communication via Unix socket (au lieu de TCP)</span>
+            </label>
+        </div>
+    </div>
+</section>

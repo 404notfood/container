@@ -1,0 +1,43 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Générateur de stack Docker/Podman — configuration complète générée côté client, aucune donnée envoyée au serveur." />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Container Stack Generator" />
+    <meta property="og:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks (WordPress, Laravel, Next.js, Django, etc.). Configuration générée côté client pour une sécurité maximale." />
+    <meta property="og:site_name" content="Container Stack Generator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Container Stack Generator" />
+    <meta name="twitter:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks." />
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <title>Container Stack Generator</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olWTTB9kLSNtxK9VHJ1OHxQVvWLVPzTlY+Ln+GqTHd/VvtDsKzACVnEN8TYLdPAQ0tnQmP0EvQKHrH2aBgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Highlight.js -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja+j4aAznSlk4ceVLSQjkMNu1t+2Vk3kB5eRzOXPl3DZLp+QDBvL34bGkhBLEOQ7/q3GN5a1ORjCKWQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js" integrity="sha512-SYsqEcYEGHLvEZBSEdRi3pjXKGLE4DLN4DqyUJbhdjdOSCmCEGO6xR1o8p3VGnN1Yg3fLPCHJMJOAYP3E7cHQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js" integrity="sha512-v/7eZQ0tRJlZ5AYqVKJcQnJZFjrC36L3vOH8x6cg9TUcPMy4i8uIIlzBa0KNLxBHEv6t7YHKqpYbqzfmECDhOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js" integrity="sha512-WE3s/OC+OYW1RKvTBMXpVdOelLHBxEGArFdN5J6YgHXkqBaUyqGLYs5cXVAKdCkBp8d/LPEyDHj4r7Cw2oLu8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js" integrity="sha512-XMVcYCzh+1PuTUxlPMVhDHDe5K2x1JlqJOQPBwMbDQfN5kW4v1YuOFTY3+KxGqLqyJpZiWRPFDz1CpUMXhcHqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-hsVk9jWF8zLQUOWi7N+WIbSNJ8lXtSs/NQCmswHM7mJMz5YdWSKTR2Jz5lnHs/vNUaG04eeBMRYqn3vYsH2pFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js" integrity="sha512-eIUlGEgqA5pOq1yHhfKdxVxT5m/W2u0Z2T1cJ0rqSi9C/qHqQNVzOa6NRZVx2UtK0uAG8FP/b8YwEv6VBNhPyg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js" integrity="sha512-LQD3WNdE1KfKOPpFfYQ7p8cqLEbH9zPBQB7r/6qABZ9z6hOSK+PtNH9xqALBJCLTxqCH0gSQvD0l8YK0T1+HAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-Y5wjvGCOHGIvvT75Qh5fT2sLlGqQ0pFGdVLZ/EMaSvAkAp2pTnP1PZcQhXx2GRIZiCDYiU7LJPPwGIxL8LAOOg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js" integrity="sha512-dSwRjJu/VhTAVqOQaP8xXQGfVYd9L2QQPx/Z0xMJdmGq0Y8VfUMBEtJOPEgjdj4h7yqYXS+0uJrq2tD7gBhckg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js" integrity="sha512-xv8PJmWxvvVEQbGLLQW+1NQpH4P5hR/xeGBB8D6vO5N+LzQqHGqRfhBYpELgcJJfqQmUPm8sWBCJ+0j0sXOjBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/properties.min.js" integrity="sha512-9qPJKvXKHYEShAZYa13Ry95qXQQU+vXyxGCLj/RYfHhPzg3tLRz+CIYF5bhOm1eLKZBRqLwW1NWDPX2EyWQJ7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Utilities -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-P9bmyZ3h/PRnGQ4nRxfDRXn6YzU6xPCvHyLvVGTvmPWqEF3PzBMqjXdPfBkXmgJVwbBUGLQEQ0yinC3I0LpNsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>

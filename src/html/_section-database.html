@@ -1,0 +1,87 @@
+<section class="card" id="section-database">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+        <h2>Base de données</h2>
+    </div>
+    <div class="card-body">
+        <div class="service-block">
+            <label class="toggle-row">
+                <input type="checkbox" id="enableMysql" class="toggle-input" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">MySQL</span>
+            </label>
+            <div class="service-options" id="mysqlOptions">
+                <div class="form-group">
+                    <label for="mysqlVersion">Version</label>
+                    <select id="mysqlVersion">
+                        <option value="8.0">8.0 (EOL avril 2026)</option>
+                        <option value="8.4" selected>8.4 LTS (Recommandé)</option>
+                        <option value="9.0">9.0 Innovation</option>
+                        <option value="9.6">9.6 Innovation (Latest)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="service-block">
+            <label class="toggle-row">
+                <input type="checkbox" id="enableMariadb" class="toggle-input" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">MariaDB</span>
+            </label>
+            <div class="service-options" id="mariadbOptions">
+                <div class="form-group">
+                    <label for="mariadbVersion">Version</label>
+                    <select id="mariadbVersion">
+                        <option value="10.11">10.11 LTS</option>
+                        <option value="11.4">11.4 LTS</option>
+                        <option value="11.8" selected>11.8 LTS (Recommandé)</option>
+                        <option value="12.2">12.2 Rolling</option>
+                        <option value="12.3">12.3 RC (LTS Q2 2026)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="service-block">
+            <label class="toggle-row">
+                <input type="checkbox" id="enablePostgres" class="toggle-input" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">PostgreSQL</span>
+            </label>
+            <div class="service-options" id="postgresOptions">
+                <div class="form-group">
+                    <label for="postgresVersion">Version</label>
+                    <select id="postgresVersion">
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18" selected>18 (Latest)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="service-block">
+            <label class="toggle-row">
+                <input type="checkbox" id="enableMongo" class="toggle-input" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">MongoDB</span>
+            </label>
+            <div class="service-options" id="mongoOptions">
+                <div class="form-group">
+                    <label for="mongoVersion">Version</label>
+                    <select id="mongoVersion">
+                        <option value="5.0">5.0</option>
+                        <option value="6.0">6.0</option>
+                        <option value="7.0">7.0</option>
+                        <option value="8.0">8.0</option>
+                        <option value="8.2" selected>8.2 (Latest)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

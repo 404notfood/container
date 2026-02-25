@@ -1,0 +1,62 @@
+<section class="card" id="section-environment">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+        <h2>Environnement de développement</h2>
+    </div>
+    <div class="card-body">
+        <div class="preset-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+            <label class="preset-card active" data-env="windows-laragon">
+                <input type="radio" name="environment" value="windows-laragon" checked />
+                <span class="preset-icon">La</span>
+                <span class="preset-name">Laragon</span>
+                <span class="preset-desc">Windows</span>
+            </label>
+            <label class="preset-card" data-env="windows-herd">
+                <input type="radio" name="environment" value="windows-herd" />
+                <span class="preset-icon">He</span>
+                <span class="preset-name">Herd</span>
+                <span class="preset-desc">Windows/Mac</span>
+            </label>
+            <label class="preset-card" data-env="windows-xampp">
+                <input type="radio" name="environment" value="windows-xampp" />
+                <span class="preset-icon">Xa</span>
+                <span class="preset-name">XAMPP</span>
+                <span class="preset-desc">Cross-platform</span>
+            </label>
+            <label class="preset-card" data-env="windows-wamp">
+                <input type="radio" name="environment" value="windows-wamp" />
+                <span class="preset-icon">Wa</span>
+                <span class="preset-name">WAMP</span>
+                <span class="preset-desc">Windows</span>
+            </label>
+            <label class="preset-card" data-env="mac-mamp">
+                <input type="radio" name="environment" value="mac-mamp" />
+                <span class="preset-icon">Ma</span>
+                <span class="preset-name">MAMP</span>
+                <span class="preset-desc">macOS/Windows</span>
+            </label>
+            <label class="preset-card" data-env="linux-lamp">
+                <input type="radio" name="environment" value="linux-lamp" />
+                <span class="preset-icon">La</span>
+                <span class="preset-name">LAMP</span>
+                <span class="preset-desc">Linux</span>
+            </label>
+            <label class="preset-card" data-env="linux-local">
+                <input type="radio" name="environment" value="linux-local" />
+                <span class="preset-icon">Li</span>
+                <span class="preset-name">Linux</span>
+                <span class="preset-desc">Standalone</span>
+            </label>
+            <label class="preset-card" data-env="mac-local">
+                <input type="radio" name="environment" value="mac-local" />
+                <span class="preset-icon">Mc</span>
+                <span class="preset-name">macOS</span>
+                <span class="preset-desc">Standalone</span>
+            </label>
+        </div>
+    </div>
+</section>

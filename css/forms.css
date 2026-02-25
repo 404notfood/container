@@ -1,0 +1,50 @@
+/* ===== Forms ===== */
+.form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.form-row.mt-sm { margin-top: .5rem; }
+.form-group { flex: 1; min-width: 180px; }
+.form-group label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: .35rem;
+}
+.optional { color: var(--text-muted); font-weight: 400; font-size: .75rem; }
+input[type="text"], select {
+  width: 100%;
+  padding: .5rem .75rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: .9rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88,166,255,.15);
+}
+input[type="text"].field-invalid {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(248,81,73,.12);
+}
+select { cursor: pointer; }
+
+.field-error {
+  display: none;
+  font-size: .75rem;
+  color: var(--red);
+  margin-top: .25rem;
+}
+
+/* ===== Info Box ===== */
+.info-box {
+  margin-top: 1rem;
+  padding: .75rem;
+  background: var(--info-bg);
+  border-left: 3px solid var(--info-border);
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  transition: border-left-color .3s;
+}

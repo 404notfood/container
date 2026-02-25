@@ -1,0 +1,29 @@
+<section class="card" id="section-runtime">
+    <div class="card-header">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="3" />
+            <path d="M8 2v20M16 2v20M2 8h20M2 16h20" />
+        </svg>
+        <h2>Moteur de conteneurs</h2>
+        <span class="hint">Docker ou Podman</span>
+    </div>
+    <div class="card-body">
+        <div class="radio-group" role="radiogroup" aria-label="Sélection du runtime de conteneur">
+            <label class="radio-card active" data-value="docker">
+                <input type="radio" name="runtime" value="docker" checked aria-checked="true" />
+                <span class="radio-icon">D</span>
+                <span class="radio-label">Docker</span>
+                <span class="radio-desc">Recommandé</span>
+            </label>
+            <label class="radio-card" data-value="podman">
+                <input type="radio" name="runtime" value="podman" aria-checked="false" />
+                <span class="radio-icon">P</span>
+                <span class="radio-label">Podman</span>
+                <span class="radio-desc">Rootless</span>
+            </label>
+        </div>
+        <div class="info-box" id="runtimeInfo">
+            <strong>Docker</strong> est le runtime le plus populaire et le mieux supporté. Recommandé pour la plupart des utilisateurs.
+        </div>
+    </div>
+</section>
