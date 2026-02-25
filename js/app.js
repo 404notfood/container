@@ -2,11 +2,15 @@
    app.js — UI logic, events, preview, download
    ======================================== */
 
+// ---- App version ----
+const APP_VERSION = 'v2.5.0';
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ---- Preview state (hoisted) ----
+  // ---- Preview state ----
   let currentFiles = {};
-  let currentTab = '';
+  let currentTab   = '';
+  let hlCache      = {};          // Cache highlighted HTML per file tab
 
   // ---- Security Helpers ----
   function escapeHtml(unsafe) {
@@ -20,12 +24,55 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/\//g, '&#x2F;');
   }
 
+  // ---- Debounce ----
+  function debounce(fn, delay) {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  // ---- Toast ----
+  let toastTimer;
+  function showToast(msg, isError) {
+    let toast = document.getElementById('appToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'appToast';
+      toast.className = 'toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.borderColor = isError ? 'var(--red)' : 'var(--green)';
+    toast.style.color        = isError ? 'var(--red)' : 'var(--green)';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ---- Field validation display ----
+  function showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (field) field.classList.add('field-invalid');
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    if (errorEl) { errorEl.textContent = message; errorEl.style.display = 'block'; }
+  }
+
+  function clearFieldErrors() {
+    document.querySelectorAll('.field-error').forEach(el => {
+      el.textContent = ''; el.style.display = 'none';
+    });
+    document.querySelectorAll('.field-invalid').forEach(el => el.classList.remove('field-invalid'));
+  }
+
   // ---- Helpers ----
   function setToggle(id, checked) {
     const el = document.getElementById(id);
     if (el) {
       el.checked = checked;
-      // Open/close options panel
       const optionsId = id.replace('enable', '').toLowerCase() + 'Options';
       const opts = document.getElementById(optionsId);
       if (opts) opts.classList.toggle('open', checked);
@@ -36,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
     if (radio) {
       radio.checked = true;
-      // Update active class on parent cards
       const group = radio.closest('.radio-group, .preset-grid');
       if (group) {
         group.querySelectorAll('.radio-card, .preset-card').forEach(c => c.classList.remove('active'));
@@ -55,7 +101,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cb) cb.checked = checked;
   }
 
-  // ---- Radio card selection (webserver, ssl, deployMode) ----
+  // ---- Accessibility setup ----
+  // Decorative SVGs hidden from screen readers
+  document.querySelectorAll('svg').forEach(svg => {
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+  });
+
+  // ARIA roles for radio groups
+  const radioGroupLabels = {
+    runtime:   'Runtime de conteneur',
+    webserver: 'Serveur web',
+    ssl:       'Configuration SSL / HTTPS',
+  };
+  document.querySelectorAll('.radio-group').forEach(group => {
+    group.setAttribute('role', 'radiogroup');
+    const firstInput = group.querySelector('input[type="radio"]');
+    if (firstInput && radioGroupLabels[firstInput.name]) {
+      group.setAttribute('aria-label', radioGroupLabels[firstInput.name]);
+    }
+  });
+
+  // ARIA for preset / environment grids
+  const presetGrid = document.querySelector('#section-preset .preset-grid');
+  if (presetGrid) { presetGrid.setAttribute('role', 'radiogroup'); presetGrid.setAttribute('aria-label', "Preset d'application"); }
+  const envGrid = document.querySelector('#section-environment .preset-grid');
+  if (envGrid) { envGrid.setAttribute('role', 'radiogroup'); envGrid.setAttribute('aria-label', "Environnement de développement"); }
+
+  // ---- Radio card selection (webserver, ssl) ----
   document.querySelectorAll('.radio-group').forEach(group => {
     group.querySelectorAll('.radio-card').forEach(card => {
       card.addEventListener('click', () => {
@@ -63,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('active');
         const input = card.querySelector('input');
         input.checked = true;
-        // Trigger change event so deploy mode / other handlers fire
         input.dispatchEvent(new Event('change', { bubbles: true }));
         updateNginxSocketVisibility();
         updatePreview();
@@ -71,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Environment card selection (using preset-grid) ----
+  // ---- Environment card selection ----
   document.querySelectorAll('[data-env]').forEach(card => {
     card.addEventListener('click', () => {
       document.querySelectorAll('[data-env]').forEach(c => c.classList.remove('active'));
@@ -113,52 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   });
 
-  // ---- Deploy mode (Standalone / HestiaCP) ----
-  function updateDeployMode() {
-    const mode = document.querySelector('input[name="deployMode"]:checked').value;
-    const isHestia = mode === 'hestia';
-    const hestiaOpts = document.getElementById('hestiaOptions');
-    if (hestiaOpts) hestiaOpts.style.display = isHestia ? 'block' : 'none';
-
-    // Hide/show sections not relevant in hestia mode
-    const webserverSection = document.getElementById('section-webserver');
-    const dbSection = document.getElementById('section-database');
-    const toolsSection = document.getElementById('section-tools');
-    const sslSection = document.getElementById('section-ssl');
-
-    if (webserverSection) webserverSection.style.display = isHestia ? 'none' : '';
-    if (sslSection) sslSection.style.display = isHestia ? 'none' : '';
-
-    // In hestia mode, dim DB section and disable DB toggles
-    if (dbSection) {
-      dbSection.style.opacity = isHestia ? '0.4' : '1';
-      dbSection.style.pointerEvents = isHestia ? 'none' : '';
-    }
-
-    // In hestia mode, hide DB tool toggles (Adminer, phpMyAdmin, pgAdmin, Mongo Express)
-    if (toolsSection) {
-      const dbToolIds = ['enableAdminer', 'enablePhpmyadmin', 'enablePgadmin', 'enableMongoexpress'];
-      dbToolIds.forEach(id => {
-        const toggle = document.getElementById(id);
-        if (toggle) {
-          const row = toggle.closest('.toggle-row');
-          if (row) row.style.display = isHestia ? 'none' : '';
-        }
-      });
-    }
-
-    updatePreview();
-  }
-
-  // Attach deploy mode events
-  document.querySelectorAll('input[name="deployMode"]').forEach(radio => {
-    radio.addEventListener('change', updateDeployMode);
-  });
-  updateDeployMode();
-
   // ---- Nginx socket visibility ----
   function updateNginxSocketVisibility() {
-    const ws = document.querySelector('input[name="webserver"]:checked').value;
+    const ws = document.querySelector('input[name="webserver"]:checked')?.value;
     const nginxOpt = document.getElementById('nginxSocketOption');
     if (nginxOpt) nginxOpt.style.display = ws === 'nginx' ? 'block' : 'none';
   }
@@ -167,66 +196,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Environment-based SSL options ----
   function updateEnvironmentOptions() {
     const env = document.querySelector('input[name="environment"]:checked')?.value || 'windows-laragon';
-    const sslHint = document.getElementById('sslHint');
+    const sslHint    = document.getElementById('sslHint');
     const sslOptions = document.getElementById('sslOptions');
 
-    // Environnements avec gestion SSL externe (pas dans les containers)
-    const externalSslEnvs = [
-      'windows-laragon',
-      'windows-herd',
-      'windows-xampp',
-      'windows-wamp',
-      'mac-mamp',
-      'linux-lamp'
-    ];
-
-    // Messages selon l'environnement
+    const externalSslEnvs = ['windows-laragon','windows-herd','windows-xampp','windows-wamp','mac-mamp','linux-lamp'];
     const sslMessages = {
       'windows-laragon': 'SSL géré par Laragon',
-      'windows-herd': 'SSL géré par Herd',
-      'windows-xampp': 'SSL via config Apache/Nginx XAMPP',
-      'windows-wamp': 'SSL via config Apache WAMP',
-      'mac-mamp': 'SSL via config Apache/Nginx MAMP',
-      'linux-lamp': 'SSL via config système (Apache/Nginx)',
-      'linux-local': 'SSL géré par les containers',
-      'mac-local': 'SSL géré par les containers'
+      'windows-herd':    'SSL géré par Herd',
+      'windows-xampp':   'SSL via config Apache/Nginx XAMPP',
+      'windows-wamp':    'SSL via config Apache WAMP',
+      'mac-mamp':        'SSL via config Apache/Nginx MAMP',
+      'linux-lamp':      'SSL via config système (Apache/Nginx)',
+      'linux-local':     'SSL géré par les containers',
+      'mac-local':       'SSL géré par les containers',
     };
 
-    if (externalSslEnvs.includes(env)) {
-      // Pour les environnements avec serveur web intégré, désactiver SSL dans les containers
-      if (sslHint) {
-        sslHint.textContent = sslMessages[env] || 'SSL géré en externe';
-        sslHint.style.display = 'inline';
-      }
+    if (sslHint) sslHint.textContent = sslMessages[env] || 'Dépend de l\'environnement';
 
-      // Désactiver les options SSL sauf "Aucun"
+    if (externalSslEnvs.includes(env)) {
       if (sslOptions) {
         sslOptions.querySelectorAll('.radio-card').forEach(card => {
-          const value = card.querySelector('input').value;
-          if (value !== 'none') {
-            card.style.opacity = '0.5';
-            card.style.pointerEvents = 'none';
-          } else {
-            card.style.opacity = '1';
-            card.style.pointerEvents = '';
-          }
+          const val = card.querySelector('input').value;
+          card.style.opacity       = val !== 'none' ? '0.5' : '1';
+          card.style.pointerEvents = val !== 'none' ? 'none' : '';
         });
       }
-
-      // Forcer "Aucun" pour SSL
       setRadio('ssl', 'none');
-
     } else {
-      // Pour Linux/macOS standalone, activer toutes les options SSL
-      if (sslHint) {
-        sslHint.textContent = sslMessages[env] || 'SSL géré par les containers';
-        sslHint.style.display = 'inline';
-      }
-
       if (sslOptions) {
         sslOptions.querySelectorAll('.radio-card').forEach(card => {
-          card.style.opacity = '1';
-          card.style.pointerEvents = '';
+          card.style.opacity = '1'; card.style.pointerEvents = '';
         });
       }
     }
@@ -234,67 +233,50 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview();
   }
 
-  // Attacher les événements pour l'environnement
-  document.querySelectorAll('input[name="environment"]').forEach(radio => {
-    radio.addEventListener('change', updateEnvironmentOptions);
-  });
+  document.querySelectorAll('input[name="environment"]').forEach(r => r.addEventListener('change', updateEnvironmentOptions));
   updateEnvironmentOptions();
 
   // ---- Runtime info update ----
   function updateRuntimeInfo() {
-    const runtime = document.querySelector('input[name="runtime"]:checked')?.value || 'docker';
+    const runtime    = document.querySelector('input[name="runtime"]:checked')?.value || 'docker';
     const runtimeInfo = document.getElementById('runtimeInfo');
-
     if (runtimeInfo) {
       const infos = {
-        'docker': {
-          title: 'Docker',
-          text: 'Docker est le runtime le plus populaire et le mieux supporté. Recommandé pour la plupart des utilisateurs.',
-          color: '#0066cc'
-        },
-        'podman': {
-          title: 'Podman',
-          text: 'Podman est un runtime rootless (sans privilèges) compatible Docker. Idéal pour Linux et la sécurité.',
-          color: '#892ca0'
-        }
+        docker: { title: 'Docker', text: 'Docker est le runtime le plus populaire et le mieux supporté. Recommandé pour la plupart des utilisateurs.', color: '#0066cc' },
+        podman: { title: 'Podman', text: 'Podman est un runtime rootless (sans privilèges) compatible Docker. Idéal pour Linux et la sécurité.',  color: '#892ca0' },
       };
-
       const info = infos[runtime];
       runtimeInfo.innerHTML = `<strong>${info.title}</strong> : ${info.text}`;
       runtimeInfo.style.borderLeftColor = info.color;
     }
-
     updatePreview();
   }
 
-  // Attacher les événements pour le runtime
-  document.querySelectorAll('input[name="runtime"]').forEach(radio => {
-    radio.addEventListener('change', updateRuntimeInfo);
-  });
+  document.querySelectorAll('input[name="runtime"]').forEach(r => r.addEventListener('change', updateRuntimeInfo));
   updateRuntimeInfo();
 
-  // ---- Generic input/select change ----
-  document.querySelectorAll('input, select').forEach(el => {
+  // ---- Generic input/select change (debounced for text inputs) ----
+  const debouncedUpdate = debounce(updatePreview, 300);
+  document.querySelectorAll('input[type="text"]').forEach(el => {
+    el.addEventListener('input',  debouncedUpdate);
     el.addEventListener('change', updatePreview);
-    el.addEventListener('input', updatePreview);
   });
+  document.querySelectorAll('select').forEach(el => el.addEventListener('change', updatePreview));
 
-  // ---- Preset sub-options visibility ----
+  // ---- Preset sub-options visibility (CSS class-based with animation) ----
   function showPresetOptions(preset) {
-    document.querySelectorAll('.preset-options').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.preset-options').forEach(el => el.classList.remove('open'));
     const panel = document.getElementById(`presetOptions-${preset}`);
-    if (panel) panel.style.display = 'block';
+    if (panel) panel.classList.add('open');
   }
 
   // ---- Apply preset: auto-configure stack ----
   function applyPreset(preset) {
     showPresetOptions(preset);
-
-    // Reset all toggles first if switching presets (except 'none')
     if (preset === 'none') return;
 
     switch (preset) {
-      case 'wordpress':
+      case 'wordpress': {
         setRadio('webserver', 'nginx');
         setToggle('enablePhp', true);
         setSelect('phpVersion', '8.4');
@@ -309,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setToggle('enableNode', false);
         setToggle('enablePython', false);
         setToggle('enableJava', false);
-        // DB based on sub-option
         const wpDb = document.getElementById('wpDbEngine').value;
         setToggle('enableMysql', wpDb === 'mysql');
         setToggle('enableMariadb', wpDb === 'mariadb');
@@ -318,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setToggle('enableRedis', false);
         setToggle('enableMailpit', true);
         break;
+      }
 
       case 'laravel': {
         setRadio('webserver', 'nginx');
@@ -341,10 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setToggle('enableMongo', false);
         setToggle('enableRedis', true);
         setToggle('enableMailpit', true);
-        // Starter kits with frontend need Node
         const starter = document.getElementById('laravelStarter').value;
-        const needsNode = starter.includes('react') || starter.includes('vue') || starter.includes('inertia');
-        setToggle('enableNode', needsNode);
+        setToggle('enableNode', starter.includes('react') || starter.includes('vue') || starter.includes('inertia'));
         break;
       }
 
@@ -488,11 +468,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Preview ----
+  // ---- Preview (with inline validation feedback) ----
   function updatePreview() {
-    const config = Generators.getConfig();
-    currentFiles = Generators.generateFiles(config);
-    renderTabs();
+    clearFieldErrors();
+    let hasError = false;
+
+    const validators = [
+      { id: 'projectName',   fn: v => Generators.validateProjectName(v || 'my-app') },
+      { id: 'projectDomain', fn: v => Generators.validateDomain(v) },
+      { id: 'gitRepoUrl',    fn: v => Generators.validateGitUrl(v) },
+      { id: 'gitBranch',     fn: v => Generators.validateGitBranch(v) },
+    ];
+
+    for (const { id, fn } of validators) {
+      const field = document.getElementById(id);
+      if (!field) continue;
+      try { fn(field.value.trim()); }
+      catch (e) { showFieldError(id, e.message); hasError = true; }
+    }
+
+    if (hasError) return;
+
+    try {
+      const config = Generators.getConfig();
+      currentFiles = Generators.generateFiles(config);
+      hlCache = {};
+      renderTabs();
+    } catch (e) {
+      console.error('[Preview]', e);
+      showToast('Erreur : ' + e.message, true);
+    }
   }
 
   function renderTabs() {
@@ -521,26 +526,184 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCode() {
     const codeEl = document.getElementById('previewCode');
     const content = currentFiles[currentTab] || '';
-    const lang = Generators.getLanguage(currentTab);
-    codeEl.textContent = content;
+    const lang    = Generators.getLanguage(currentTab);
     codeEl.className = `hljs language-${lang}`;
-    if (typeof hljs !== 'undefined') hljs.highlightElement(codeEl);
+
+    if (hlCache[currentTab]) {
+      codeEl.innerHTML = hlCache[currentTab];
+    } else {
+      codeEl.textContent = content;
+      if (typeof hljs !== 'undefined') hljs.highlightElement(codeEl);
+      hlCache[currentTab] = codeEl.innerHTML;
+    }
+  }
+
+  // ---- Copy to clipboard ----
+  const btnCopy = document.getElementById('btnCopy');
+  if (btnCopy) {
+    btnCopy.addEventListener('click', () => {
+      const content = currentFiles[currentTab] || '';
+      if (!content) return;
+      const label = btnCopy.querySelector('[data-copy-label]');
+      navigator.clipboard.writeText(content).then(() => {
+        btnCopy.classList.add('copied');
+        if (label) label.textContent = 'Copié !';
+        showToast('Copié dans le presse-papier !');
+        setTimeout(() => {
+          btnCopy.classList.remove('copied');
+          if (label) label.textContent = 'Copier';
+        }, 2000);
+      }).catch(() => showToast('Impossible de copier', true));
+    });
   }
 
   // ---- Download ZIP ----
-  document.getElementById('btnDownload').addEventListener('click', () => {
-    const config = Generators.getConfig();
-    const files = Generators.generateFiles(config);
-    const zip = new JSZip();
-    for (const [path, content] of Object.entries(files)) {
-      zip.file(path, content);
+  function doDownload() {
+    try {
+      const config = Generators.getConfig();
+      const files  = Generators.generateFiles(config);
+      const zip    = new JSZip();
+      for (const [path, content] of Object.entries(files)) zip.file(path, content);
+      zip.generateAsync({ type: 'blob' }).then(blob => saveAs(blob, `${config.projectName}.zip`));
+    } catch (e) {
+      showToast('Erreur : ' + e.message, true);
     }
-    zip.generateAsync({ type: 'blob' }).then(blob => {
-      saveAs(blob, `${config.projectName}.zip`);
+  }
+
+  document.getElementById('btnDownload').addEventListener('click', doDownload);
+  document.getElementById('btnDownloadHeader')?.addEventListener('click', doDownload);
+
+  // ---- ARIA attributes synchronization ----
+  function initAriaAttributes() {
+    // Add role="switch" and aria-checked to all toggle inputs
+    document.querySelectorAll('.toggle-input').forEach(toggle => {
+      toggle.setAttribute('role', 'switch');
+      toggle.setAttribute('aria-checked', toggle.checked ? 'true' : 'false');
+
+      // Get label text from adjacent .toggle-label for aria-label if not already set
+      if (!toggle.hasAttribute('aria-label')) {
+        const label = toggle.closest('.toggle-row')?.querySelector('.toggle-label');
+        if (label) toggle.setAttribute('aria-label', label.textContent.trim());
+      }
+
+      // Update aria-checked on change
+      toggle.addEventListener('change', (e) => {
+        e.target.setAttribute('aria-checked', e.target.checked ? 'true' : 'false');
+      });
+    });
+
+    // Update aria-checked for radio inputs in radio groups
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      const updateAriaChecked = () => {
+        const name = radio.getAttribute('name');
+        if (!name) return;
+        document.querySelectorAll(`input[type="radio"][name="${name}"]`).forEach(r => {
+          r.setAttribute('aria-checked', r.checked ? 'true' : 'false');
+        });
+      };
+
+      // Set initial state
+      updateAriaChecked();
+
+      // Update on change
+      radio.addEventListener('change', updateAriaChecked);
+    });
+  }
+
+  // ---- Sidebar Navigation ----
+  const sidebarNav = document.getElementById('sidebarNav');
+  const sidebarMobileToggle = document.getElementById('sidebarMobileToggle');
+  const sidebarNavItems = document.querySelectorAll('.sidebar-nav-item');
+
+  // Create mobile overlay
+  const sidebarOverlay = document.createElement('div');
+  sidebarOverlay.className = 'sidebar-overlay';
+  document.body.appendChild(sidebarOverlay);
+
+  function closeMobileSidebar() {
+    if (sidebarNav) sidebarNav.classList.remove('mobile-open');
+    sidebarOverlay.classList.remove('visible');
+    if (sidebarMobileToggle) sidebarMobileToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (sidebarMobileToggle) {
+    sidebarMobileToggle.addEventListener('click', () => {
+      const isOpen = sidebarNav.classList.toggle('mobile-open');
+      sidebarOverlay.classList.toggle('visible', isOpen);
+      sidebarMobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+  // Collect section elements
+  const sectionElements = Array.from(sidebarNavItems).map(item => {
+    const id = item.getAttribute('data-section');
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  // Track visited sections
+  const visitedSections = new Set();
+
+  function updateActiveSection() {
+    const scrollPos = window.scrollY + 120;
+    let activeIndex = 0;
+
+    sectionElements.forEach((section, index) => {
+      if (section.offsetTop <= scrollPos) {
+        activeIndex = index;
+      }
+    });
+
+    // Mark current and all above as visited
+    for (let i = 0; i <= activeIndex; i++) {
+      visitedSections.add(i);
+    }
+
+    sidebarNavItems.forEach((item, index) => {
+      const dot = item.querySelector('.nav-dot');
+      item.classList.toggle('active', index === activeIndex);
+      if (dot) {
+        dot.classList.toggle('active', index === activeIndex);
+        dot.classList.toggle('visited', visitedSections.has(index) && index !== activeIndex);
+      }
+    });
+
+    // Update progress bar
+    updateProgressBar();
+  }
+
+  function updateProgressBar() {
+    const total = sectionElements.length;
+    const completed = visitedSections.size;
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    if (progressFill) progressFill.style.width = `${(completed / total) * 100}%`;
+    if (progressText) progressText.textContent = `${completed} / ${total} sections`;
+  }
+
+  window.addEventListener('scroll', debounce(updateActiveSection, 80));
+  updateActiveSection();
+
+  // Smooth scroll to section
+  sidebarNavItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('data-section');
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        closeMobileSidebar();
+      }
     });
   });
 
   // ---- Init ----
+  // Set version
+  const versionEl = document.getElementById('appVersion');
+  if (versionEl) versionEl.textContent = APP_VERSION;
+
+  initAriaAttributes();
   showPresetOptions('none');
   updatePreview();
 });

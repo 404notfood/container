@@ -3,6 +3,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Générateur de stack Docker/Podman — configuration complète générée côté client, aucune donnée envoyée au serveur." />
+
+        <!-- Open Graph / Social Media -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Container Stack Generator" />
+        <meta property="og:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks (WordPress, Laravel, Next.js, Django, etc.). Configuration générée côté client pour une sécurité maximale." />
+        <meta property="og:site_name" content="Container Stack Generator" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Container Stack Generator" />
+        <meta name="twitter:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks." />
+
         <meta
             http-equiv="Content-Security-Policy"
             content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
@@ -21,84 +32,98 @@
             referrerpolicy="no-referrer"
         />
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
             integrity="sha512-D9gUyxqja+j4aAznSlk4ceVLSQjkMNu1t+2Vk3kB5eRzOXPl3DZLp+QDBvL34bGkhBLEOQ7/q3GN5a1ORjCKWQ=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"
             integrity="sha512-SYsqEcYEGHLvEZBSEdRi3pjXKGLE4DLN4DqyUJbhdjdOSCmCEGO6xR1o8p3VGnN1Yg3fLPCHJMJOAYP3E7cHQg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"
             integrity="sha512-v/7eZQ0tRJlZ5AYqVKJcQnJZFjrC36L3vOH8x6cg9TUcPMy4i8uIIlzBa0KNLxBHEv6t7YHKqpYbqzfmECDhOQ=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js"
             integrity="sha512-WE3s/OC+OYW1RKvTBMXpVdOelLHBxEGArFdN5J6YgHXkqBaUyqGLYs5cXVAKdCkBp8d/LPEyDHj4r7Cw2oLu8w=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js"
             integrity="sha512-XMVcYCzh+1PuTUxlPMVhDHDe5K2x1JlqJOQPBwMbDQfN5kW4v1YuOFTY3+KxGqLqyJpZiWRPFDz1CpUMXhcHqA=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"
             integrity="sha512-hsVk9jWF8zLQUOWi7N+WIbSNJ8lXtSs/NQCmswHM7mJMz5YdWSKTR2Jz5lnHs/vNUaG04eeBMRYqn3vYsH2pFg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"
             integrity="sha512-eIUlGEgqA5pOq1yHhfKdxVxT5m/W2u0Z2T1cJ0rqSi9C/qHqQNVzOa6NRZVx2UtK0uAG8FP/b8YwEv6VBNhPyg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"
             integrity="sha512-LQD3WNdE1KfKOPpFfYQ7p8cqLEbH9zPBQB7r/6qABZ9z6hOSK+PtNH9xqALBJCLTxqCH0gSQvD0l8YK0T1+HAQ=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"
             integrity="sha512-Y5wjvGCOHGIvvT75Qh5fT2sLlGqQ0pFGdVLZ/EMaSvAkAp2pTnP1PZcQhXx2GRIZiCDYiU7LJPPwGIxL8LAOOg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"
             integrity="sha512-dSwRjJu/VhTAVqOQaP8xXQGfVYd9L2QQPx/Z0xMJdmGq0Y8VfUMBEtJOPEgjdj4h7yqYXS+0uJrq2tD7gBhckg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"
             integrity="sha512-xv8PJmWxvvVEQbGLLQW+1NQpH4P5hR/xeGBB8D6vO5N+LzQqHGqRfhBYpELgcJJfqQmUPm8sWBCJ+0j0sXOjBg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/properties.min.js"
             integrity="sha512-9qPJKvXKHYEShAZYa13Ry95qXQQU+vXyxGCLj/RYfHhPzg3tLRz+CIYF5bhOm1eLKZBRqLwW1NWDPX2EyWQJ7w=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
             integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
         <script
+            defer
             src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
             integrity="sha512-P9bmyZ3h/PRnGQ4nRxfDRXn6YzU6xPCvHyLvVGTvmPWqEF3PzBMqjXdPfBkXmgJVwbBUGLQEQ0yinC3I0LpNsg=="
             crossorigin="anonymous"
@@ -116,15 +141,148 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <rect x="2" y="2" width="20" height="20" rx="3" />
                         <path d="M7 8h10M7 12h10M7 16h6" />
                     </svg>
                     <h1>Container Stack Generator</h1>
                 </div>
-                <span class="badge">v2.5.0</span>
+        <span class="badge" id="appVersion"></span>
+                <div class="header-actions">
+                    <div class="progress-bar-wrap" id="headerProgress">
+                        <span class="progress-text" id="progressText">0 / 11 sections</span>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btnDownloadHeader" aria-label="Télécharger la configuration ZIP">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span class="btn-label">Télécharger ZIP</span>
+                    </button>
+                </div>
             </div>
         </header>
+
+        <div class="content-area">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar-nav" id="sidebarNav" aria-label="Navigation des sections">
+                <h3 class="sidebar-title">Sections</h3>
+                <ul class="sidebar-nav-list">
+                    <li>
+                        <a href="#section-project" class="sidebar-nav-item" data-section="section-project">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </span>
+                            <span class="nav-label">Projet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-runtime" class="sidebar-nav-item" data-section="section-runtime">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M8 2v20M16 2v20M2 8h20M2 16h20"/></svg>
+                            </span>
+                            <span class="nav-label">Runtime</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-preset" class="sidebar-nav-item" data-section="section-preset">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            </span>
+                            <span class="nav-label">Preset</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-webserver" class="sidebar-nav-item" data-section="section-webserver">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                            </span>
+                            <span class="nav-label">Serveur Web</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-backend" class="sidebar-nav-item" data-section="section-backend">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            </span>
+                            <span class="nav-label">Backend</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-database" class="sidebar-nav-item" data-section="section-database">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                            </span>
+                            <span class="nav-label">Base de données</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-cache" class="sidebar-nav-item" data-section="section-cache">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            </span>
+                            <span class="nav-label">Cache & Queue</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-tools" class="sidebar-nav-item" data-section="section-tools">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                            </span>
+                            <span class="nav-label">Outils</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-environment" class="sidebar-nav-item" data-section="section-environment">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            </span>
+                            <span class="nav-label">Environnement</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-ssl" class="sidebar-nav-item" data-section="section-ssl">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            </span>
+                            <span class="nav-label">SSL / HTTPS</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#section-preview" class="sidebar-nav-item" data-section="section-preview">
+                            <span class="nav-dot"></span>
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </span>
+                            <span class="nav-label">Aperçu</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Mobile nav toggle -->
+            <button class="sidebar-mobile-toggle" id="sidebarMobileToggle" aria-label="Afficher/masquer la navigation" aria-expanded="false">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
 
         <main>
             <!-- Section 1: Project Info -->
@@ -137,6 +295,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <path
                             d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
@@ -155,6 +314,7 @@
                                 value="my-app"
                                 placeholder="my-app"
                             />
+                            <div class="field-error" id="projectName-error" role="alert"></div>
                         </div>
                         <div class="form-group">
                             <label for="projectDomain"
@@ -168,9 +328,10 @@
                                 id="projectDomain"
                                 placeholder="example.com"
                             />
+                            <div class="field-error" id="projectDomain-error" role="alert"></div>
                         </div>
                     </div>
-                    <div class="form-row" style="margin-top: 0.5rem">
+                    <div class="form-row mt-sm">
                         <div class="form-group">
                             <label for="gitRepoUrl"
                                 >Repository Git
@@ -181,25 +342,27 @@
                                 id="gitRepoUrl"
                                 placeholder="https://github.com/user/repo.git"
                             />
+                            <div class="field-error" id="gitRepoUrl-error" role="alert"></div>
                         </div>
                         <div class="form-group">
                             <label for="gitBranch"
                                 >Branche
                                 <span class="optional"
-                                    >(defaut: main)</span
-                                ></label
+                                    >(défaut : main)</span
+                            ></label
                             >
                             <input
                                 type="text"
                                 id="gitBranch"
                                 placeholder="main"
                             />
+                            <div class="field-error" id="gitBranch-error" role="alert"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Section 2: Container Runtime -->
+            <!-- Section 2: Moteur de conteneurs -->
             <section class="card" id="section-runtime">
                 <div class="card-header">
                     <svg
@@ -209,28 +372,30 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <rect x="2" y="2" width="20" height="20" rx="3" />
                         <path d="M8 2v20M16 2v20M2 8h20M2 16h20" />
                     </svg>
-                    <h2>Container Runtime</h2>
+                    <h2>Moteur de conteneurs</h2>
                     <span class="hint">Docker ou Podman</span>
                 </div>
                 <div class="card-body">
-                    <div class="radio-group">
+                    <div class="radio-group" role="radiogroup" aria-label="Sélection du runtime de conteneur">
                         <label class="radio-card active" data-value="docker">
                             <input
                                 type="radio"
                                 name="runtime"
                                 value="docker"
                                 checked
+                                aria-checked="true"
                             />
                             <span class="radio-icon">D</span>
                             <span class="radio-label">Docker</span>
-                            <span class="radio-desc">Recommande</span>
+                            <span class="radio-desc">Recommandé</span>
                         </label>
                         <label class="radio-card" data-value="podman">
-                            <input type="radio" name="runtime" value="podman" />
+                            <input type="radio" name="runtime" value="podman" aria-checked="false" />
                             <span class="radio-icon">P</span>
                             <span class="radio-label">Podman</span>
                             <span class="radio-desc">Rootless</span>
@@ -239,17 +404,9 @@
                     <div
                         class="info-box"
                         id="runtimeInfo"
-                        style="
-                            margin-top: 1rem;
-                            padding: 0.75rem;
-                            background: #002b5b;
-                            border-left: 3px solid #0066cc;
-                            border-radius: 4px;
-                            font-size: 0.9rem;
-                        "
                     >
                         <strong>Docker</strong> est le runtime le plus populaire
-                        et le mieux supporte. Recommande pour la plupart des
+                        et le mieux supporté. Recommandé pour la plupart des
                         utilisateurs.
                     </div>
                 </div>
@@ -265,6 +422,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <path d="M12 2L2 7l10 5 10-5-10-5z" />
                         <path d="M2 17l10 5 10-5" />
@@ -274,13 +432,14 @@
                     <span class="hint">Auto-configure la stack</span>
                 </div>
                 <div class="card-body">
-                    <div class="preset-grid">
+                    <div class="preset-grid" role="radiogroup" aria-label="Sélection du preset d'application">
                         <label class="preset-card active" data-preset="none">
                             <input
                                 type="radio"
                                 name="preset"
                                 value="none"
                                 checked
+                                aria-checked="true"
                             />
                             <span class="preset-icon">—</span>
                             <span class="preset-name">Manuel</span>
@@ -291,49 +450,50 @@
                                 type="radio"
                                 name="preset"
                                 value="wordpress"
+                                aria-checked="false"
                             />
                             <span class="preset-icon">W</span>
                             <span class="preset-name">WordPress</span>
                             <span class="preset-desc">PHP + MySQL</span>
                         </label>
                         <label class="preset-card" data-preset="laravel">
-                            <input type="radio" name="preset" value="laravel" />
+                            <input type="radio" name="preset" value="laravel" aria-checked="false" />
                             <span class="preset-icon">L</span>
                             <span class="preset-name">Laravel</span>
                             <span class="preset-desc">PHP + DB + Redis</span>
                         </label>
                         <label class="preset-card" data-preset="symfony">
-                            <input type="radio" name="preset" value="symfony" />
+                            <input type="radio" name="preset" value="symfony" aria-checked="false" />
                             <span class="preset-icon">S</span>
                             <span class="preset-name">Symfony</span>
                             <span class="preset-desc">PHP + DB</span>
                         </label>
                         <label class="preset-card" data-preset="nextjs">
-                            <input type="radio" name="preset" value="nextjs" />
+                            <input type="radio" name="preset" value="nextjs" aria-checked="false" />
                             <span class="preset-icon">N</span>
                             <span class="preset-name">Next.js</span>
                             <span class="preset-desc">React SSR</span>
                         </label>
                         <label class="preset-card" data-preset="nestjs">
-                            <input type="radio" name="preset" value="nestjs" />
+                            <input type="radio" name="preset" value="nestjs" aria-checked="false" />
                             <span class="preset-icon">Ns</span>
                             <span class="preset-name">Nest.js</span>
                             <span class="preset-desc">Node API</span>
                         </label>
                         <label class="preset-card" data-preset="angular">
-                            <input type="radio" name="preset" value="angular" />
+                            <input type="radio" name="preset" value="angular" aria-checked="false" />
                             <span class="preset-icon">Ng</span>
                             <span class="preset-name">Angular</span>
                             <span class="preset-desc">SPA + Nginx</span>
                         </label>
                         <label class="preset-card" data-preset="django">
-                            <input type="radio" name="preset" value="django" />
+                            <input type="radio" name="preset" value="django" aria-checked="false" />
                             <span class="preset-icon">Dj</span>
                             <span class="preset-name">Django</span>
                             <span class="preset-desc">Python + Postgres</span>
                         </label>
                         <label class="preset-card" data-preset="flask">
-                            <input type="radio" name="preset" value="flask" />
+                            <input type="radio" name="preset" value="flask" aria-checked="false" />
                             <span class="preset-icon">Fl</span>
                             <span class="preset-name">Flask</span>
                             <span class="preset-desc">Python micro</span>
@@ -343,6 +503,7 @@
                                 type="radio"
                                 name="preset"
                                 value="springboot"
+                                aria-checked="false"
                             />
                             <span class="preset-icon">Sb</span>
                             <span class="preset-name">Spring Boot</span>
@@ -648,6 +809,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <circle cx="12" cy="12" r="10" />
                         <line x1="2" y1="12" x2="22" y2="12" />
@@ -658,54 +820,62 @@
                     <h2>Serveur Web</h2>
                 </div>
                 <div class="card-body">
-                    <div class="radio-group">
+                    <div class="radio-group" role="radiogroup" aria-label="Sélection du serveur web">
                         <label class="radio-card active" data-value="nginx">
                             <input
                                 type="radio"
                                 name="webserver"
                                 value="nginx"
                                 checked
+                                aria-checked="true"
                             />
                             <span class="radio-icon">N</span>
                             <span class="radio-label">Nginx</span>
+                            <span class="radio-desc">Haute perfo.</span>
                         </label>
                         <label class="radio-card" data-value="apache">
                             <input
                                 type="radio"
                                 name="webserver"
                                 value="apache"
+                                aria-checked="false"
                             />
                             <span class="radio-icon">A</span>
                             <span class="radio-label">Apache</span>
+                            <span class="radio-desc">.htaccess</span>
                         </label>
                         <label class="radio-card" data-value="caddy">
                             <input
                                 type="radio"
                                 name="webserver"
                                 value="caddy"
+                                aria-checked="false"
                             />
                             <span class="radio-icon">C</span>
                             <span class="radio-label">Caddy</span>
+                            <span class="radio-desc">SSL auto</span>
                         </label>
                         <label class="radio-card" data-value="traefik">
                             <input
                                 type="radio"
                                 name="webserver"
                                 value="traefik"
+                                aria-checked="false"
                             />
                             <span class="radio-icon">T</span>
                             <span class="radio-label">Traefik</span>
+                            <span class="radio-desc">Microservices</span>
                         </label>
                         <label class="radio-card" data-value="none">
-                            <input type="radio" name="webserver" value="none" />
+                            <input type="radio" name="webserver" value="none" aria-checked="false" />
                             <span class="radio-icon">—</span>
                             <span class="radio-label">Aucun</span>
+                            <span class="radio-desc">Sans proxy</span>
                         </label>
                     </div>
                     <div
                         class="nginx-socket-option"
                         id="nginxSocketOption"
-                        style="margin-top: 0.75rem"
                     >
                         <label class="toggle-row">
                             <input
@@ -723,7 +893,7 @@
                 </div>
             </section>
 
-            <!-- Section 5: Backend -->
+            <!-- Section 5: Backend (Serveur) -->
             <section class="card" id="section-backend">
                 <div class="card-header">
                     <svg
@@ -733,11 +903,12 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <polyline points="16 18 22 12 16 6" />
                         <polyline points="8 6 2 12 8 18" />
                     </svg>
-                    <h2>Backend</h2>
+                    <h2>Backend (Serveur)</h2>
                 </div>
                 <div class="card-body">
                     <!-- PHP -->
@@ -922,7 +1093,7 @@
                                 style="display: none; margin-top: 0.5rem"
                             >
                                 <label for="nvmDefault"
-                                    >Version par defaut NVM</label
+                                    >Version par défaut NVM</label
                                 >
                                 <input
                                     type="text"
@@ -1016,12 +1187,13 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <ellipse cx="12" cy="5" rx="9" ry="3" />
                         <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
                         <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
                     </svg>
-                    <h2>Base de donnees</h2>
+                    <h2>Base de données</h2>
                 </div>
                 <div class="card-body">
                     <div class="service-block">
@@ -1118,7 +1290,7 @@
                 </div>
             </section>
 
-            <!-- Section 7: Cache & Queue -->
+            <!-- Section 7: Cache & File d'attente -->
             <section class="card" id="section-cache">
                 <div class="card-header">
                     <svg
@@ -1128,12 +1300,13 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <polygon
                             points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
                         />
                     </svg>
-                    <h2>Cache &amp; Queue</h2>
+                    <h2>Cache &amp; File d'attente</h2>
                 </div>
                 <div class="card-body">
                     <div class="service-block">
@@ -1182,6 +1355,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <path
                             d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"
@@ -1294,6 +1468,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <rect
                             x="2"
@@ -1306,7 +1481,7 @@
                         <line x1="8" y1="21" x2="16" y2="21" />
                         <line x1="12" y1="17" x2="12" y2="21" />
                     </svg>
-                    <h2>Environnement de developpement</h2>
+                    <h2>Environnement de développement</h2>
                 </div>
                 <div class="card-body">
                     <div
@@ -1416,6 +1591,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <rect
                             x="3"
@@ -1486,6 +1662,7 @@
                         fill="none"
                         stroke="currentColor"
                         stroke-width="2"
+                        aria-hidden="true"
                     >
                         <path
                             d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
@@ -1494,22 +1671,24 @@
                         <line x1="16" y1="13" x2="8" y2="13" />
                         <line x1="16" y1="17" x2="8" y2="17" />
                     </svg>
-                    <h2>Preview &amp; Telechargement</h2>
-                    <button class="btn btn-primary" id="btnDownload">
-                        <svg
-                            viewBox="0 0 24 24"
-                            width="16"
-                            height="16"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                        Telecharger ZIP
-                    </button>
+                    <h2>Aperçu &amp; Téléchargement</h2>
+                    <div class="preview-actions">
+                        <button class="btn btn-ghost" id="btnCopy" aria-label="Copier le fichier actif dans le presse-papier">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                            </svg>
+                            <span data-copy-label>Copier</span>
+                        </button>
+                        <button class="btn btn-primary" id="btnDownload">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Télécharger ZIP
+                        </button>
+                    </div>
                 </div>
                 <div class="preview-tabs" id="previewTabs"></div>
                 <div class="preview-content">
@@ -1517,16 +1696,17 @@
                 </div>
             </section>
         </main>
+        </div><!-- end content-area -->
 
         <footer>
             <p>
-                Podman Stack Generator &mdash; Tous les fichiers sont generes
-                cote client, rien n'est envoye a un serveur.
+                Container Stack Generator &mdash; Tous les fichiers sont générés
+                côté client, rien n'est envoyé à un serveur.
             </p>
         </footer>
 
-        <script src="js/templates.js"></script>
-        <script src="js/generators.js"></script>
-        <script src="js/app.js"></script>
+        <script src="js/templates.js" defer></script>
+        <script src="js/generators.js" defer></script>
+        <script src="js/app.js" defer></script>
     </body>
 </html>
