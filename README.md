@@ -2,7 +2,7 @@
 
 **Générateur universel de stacks Docker et Podman avec support multi-environnement**
 
-Version 3.1.0 - Versions à jour (Février 2026)
+Version 3.1.5 - Versions à jour (Février 2026)
 
 ---
 
