@@ -1,1 +1,43 @@
-/.claude/*
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+._*
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Claude Code
+.claude/
+
+# Cursor
+.cursorindexingignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Archives / Misc
+*.zip
+*.tar.gz
+*.bak
+*.tmp
