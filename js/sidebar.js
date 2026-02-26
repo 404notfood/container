@@ -44,7 +44,13 @@
         if (section.offsetTop <= scrollPos) activeIndex = index;
       });
 
-      for (var i = 0; i <= activeIndex; i++) visited.add(i);
+      // If scrolled to bottom of page, mark all sections as visited
+      if ((window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 50)) {
+        activeIndex = sections.length - 1;
+        for (var j = 0; j < sections.length; j++) visited.add(j);
+      } else {
+        for (var i = 0; i <= activeIndex; i++) visited.add(i);
+      }
 
       navItems.forEach((item, index) => {
         var dot = item.querySelector('.nav-dot');
