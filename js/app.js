@@ -3,7 +3,7 @@
    ======================================== */
 const APP_VERSION = 'v2.5.0';
 
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   // Set version badge
   const versionEl = document.getElementById('appVersion');
   if (versionEl) versionEl.textContent = APP_VERSION;
@@ -30,4 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Preset defaults & first preview
   AppPresets.showPresetOptions('none');
   AppPreview.updatePreview();
-});
+}
+
+// Support both: DOM already ready (dynamic script injection) or still loading
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
