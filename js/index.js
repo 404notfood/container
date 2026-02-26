@@ -5,7 +5,18 @@
    ======================================== */
 (function () {
   var modules = [
-    'js/templates.js',
+    // Templates (helpers must load first, then extensions)
+    'js/tpl/helpers.js',
+    'js/tpl/compose.js',
+    'js/tpl/dockerfiles.js',
+    'js/tpl/webservers.js',
+    'js/tpl/env.js',
+    'js/tpl/presets.tpl.js',
+    'js/tpl/generic.js',
+    'js/tpl/readme.js',
+    'js/tpl/scripts.js',
+
+    // App modules
     'js/generators.js',
     'js/utils.js',
     'js/form-helpers.js',
