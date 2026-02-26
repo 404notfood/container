@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Générateur de stack Docker/Podman — configuration complète générée côté client, aucune donnée envoyée au serveur." />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Container Stack Generator" />
+    <meta property="og:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks (WordPress, Laravel, Next.js, Django, etc.). Configuration générée côté client pour une sécurité maximale." />
+    <meta property="og:site_name" content="Container Stack Generator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Container Stack Generator" />
+    <meta name="twitter:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks." />
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <title>Container Stack Generator</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Highlight.js -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js" integrity="sha512-ua2qDFSOqEpuYTjyTTmn8L1hY4sQEZGPzu30sBKqUmZO7ky5IcfYYeYjAHKeEkO2Qf3zlUzVEli9mPPLEfovlA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js" integrity="sha512-y0uGK4Ql/eJrIn2uOu2Hfc/3wnQpAHlEF58pL7akgWaVnuOJ8D5Aal/VPRKyMGADVuAavg1yVdLUpn9PlnGmYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js" integrity="sha512-8IL2n2grBY6xisj2Mk+31yI1tw6zoYdH+MsZbD+lpU8poLYhuUw78HDEXgSaSFuHD8++94Adra1Z97sgAdX91g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js" integrity="sha512-l5tdeYWLczJuljMotJAdRq5FXa7yoZzvK+C6rhqciT/o0J1qdaT2CKbPltIhaKORmC6XUOUQ33a4abcU7wacpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" integrity="sha512-i0JFeiLhgBAMGfIEVqMQwALhhse1orgl34XyotSUNiNbDIB1qS9IK53sDochCIrwvj4nJ51CsDSOqhGyhZITGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js" integrity="sha512-OPn2UK2VPojF+Hh0tfLSMiaKfP0MpRfam/6Q9VVA7LK070PkQxvffqe6chqyp6R2Ml2K7+VOdxEbMpjIKwnCAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js" integrity="sha512-3jC1jPxa1EFMDjrszKdUOQ4MwWCVtk+cbhci1HyBf5n1U9Dkd72d3wMVsmC+xDXSnaLFSiBhkjaQO0ESMdnJiw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" integrity="sha512-wW8K3TEH5ZViD4aMPzwPdhXKs/Kb5MAm7qLRd3QliYlHy0u9utSKZsZzqlZAgJ9xxXp81acwnrZVZ8oTfoLG1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js" integrity="sha512-sQgzBflUTahXrlGeMqS6Z+ugjLta005qmvARRaCSEJ8aflXe03DNo8VzxCDHGzqAUqe1+iRnLfCP5ivekMZnGA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js" integrity="sha512-GsPn8jZedZaPLThVdRVJ9kvS02HmLZBsoC9qon3IZE8Al7pUBlDIK4IzAtMbxtZ2GtLMFhHusOLTwf2JIDr0oA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/properties.min.js" integrity="sha512-ZBr5T1y0JVAWO/WjfBn1flDXUqe5GT92/f4WKww5Y1vrXBUWs5+9LhSIZE44q0O00uhcWytP0FlikN5/vZXm3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Utilities -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="3" />
+                    <path d="M7 8h10M7 12h10M7 16h6" />
+                </svg>
+                <h1>Container Stack Generator</h1>
+            </div>
+            <span class="badge" id="appVersion"></span>
+            <div class="header-actions">
+                <div class="progress-bar-wrap" id="headerProgress">
+                    <span class="progress-text" id="progressText">0 / 11 sections</span>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btnDownloadHeader" aria-label="Télécharger la configuration ZIP">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span class="btn-label">Télécharger ZIP</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-area">
+        <nav class="sidebar-nav" id="sidebarNav" aria-label="Navigation des sections">
+            <h3 class="sidebar-title">Sections</h3>
+            <ul class="sidebar-nav-list">
+                <li>
+                    <a href="#section-project" class="sidebar-nav-item" data-section="section-project">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+                        <span class="nav-label">Projet</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-runtime" class="sidebar-nav-item" data-section="section-runtime">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M8 2v20M16 2v20M2 8h20M2 16h20"/></svg></span>
+                        <span class="nav-label">Runtime</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-preset" class="sidebar-nav-item" data-section="section-preset">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+                        <span class="nav-label">Preset</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-webserver" class="sidebar-nav-item" data-section="section-webserver">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+                        <span class="nav-label">Serveur Web</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-backend" class="sidebar-nav-item" data-section="section-backend">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+                        <span class="nav-label">Backend</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-database" class="sidebar-nav-item" data-section="section-database">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+                        <span class="nav-label">Base de données</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-cache" class="sidebar-nav-item" data-section="section-cache">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                        <span class="nav-label">Cache & Queue</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-tools" class="sidebar-nav-item" data-section="section-tools">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></span>
+                        <span class="nav-label">Outils</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-environment" class="sidebar-nav-item" data-section="section-environment">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+                        <span class="nav-label">Environnement</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-ssl" class="sidebar-nav-item" data-section="section-ssl">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+                        <span class="nav-label">SSL / HTTPS</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#section-preview" class="sidebar-nav-item" data-section="section-preview">
+                        <span class="nav-dot"></span>
+                        <span class="nav-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                        <span class="nav-label">Aperçu</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Mobile nav toggle -->
+        <button class="sidebar-mobile-toggle" id="sidebarMobileToggle" aria-label="Afficher/masquer la navigation" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+        <main>
+            <section class="card" id="section-project">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    <h2>Projet</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectName">Nom du projet</label>
+                            <input type="text" id="projectName" value="my-app" placeholder="my-app" />
+                            <div class="field-error" id="projectName-error" role="alert"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDomain">Domaine <span class="optional">(optionnel, pour SSL prod)</span></label>
+                            <input type="text" id="projectDomain" placeholder="example.com" />
+                            <div class="field-error" id="projectDomain-error" role="alert"></div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-sm">
+                        <div class="form-group">
+                            <label for="gitRepoUrl">Repository Git <span class="optional">(optionnel)</span></label>
+                            <input type="text" id="gitRepoUrl" placeholder="https://github.com/user/repo.git" />
+                            <div class="field-error" id="gitRepoUrl-error" role="alert"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gitBranch">Branche <span class="optional">(défaut : main)</span></label>
+                            <input type="text" id="gitBranch" placeholder="main" />
+                            <div class="field-error" id="gitBranch-error" role="alert"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-runtime">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="3" />
+                        <path d="M8 2v20M16 2v20M2 8h20M2 16h20" />
+                    </svg>
+                    <h2>Moteur de conteneurs</h2>
+                    <span class="hint">Docker ou Podman</span>
+                </div>
+                <div class="card-body">
+                    <div class="radio-group" role="radiogroup" aria-label="Sélection du runtime de conteneur">
+                        <label class="radio-card active" data-value="docker">
+                            <input type="radio" name="runtime" value="docker" checked aria-checked="true" />
+                            <span class="radio-icon">D</span>
+                            <span class="radio-label">Docker</span>
+                            <span class="radio-desc">Recommandé</span>
+                        </label>
+                        <label class="radio-card" data-value="podman">
+                            <input type="radio" name="runtime" value="podman" aria-checked="false" />
+                            <span class="radio-icon">P</span>
+                            <span class="radio-label">Podman</span>
+                            <span class="radio-desc">Rootless</span>
+                        </label>
+                    </div>
+                    <div class="info-box" id="runtimeInfo">
+                        <strong>Docker</strong> est le runtime le plus populaire et le mieux supporté. Recommandé pour la plupart des utilisateurs.
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-preset">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                    <h2>Application / Preset</h2>
+                    <span class="hint">Auto-configure la stack</span>
+                </div>
+                <div class="card-body">
+                    <div class="preset-grid" role="radiogroup" aria-label="Sélection du preset d'application">
+                        <label class="preset-card active" data-preset="none">
+                            <input type="radio" name="preset" value="none" checked aria-checked="true" />
+                            <span class="preset-icon">—</span>
+                            <span class="preset-name">Manuel</span>
+                            <span class="preset-desc">Config libre</span>
+                        </label>
+                        <label class="preset-card" data-preset="wordpress">
+                            <input type="radio" name="preset" value="wordpress" aria-checked="false" />
+                            <span class="preset-icon">W</span>
+                            <span class="preset-name">WordPress</span>
+                            <span class="preset-desc">PHP + MySQL</span>
+                        </label>
+                        <label class="preset-card" data-preset="laravel">
+                            <input type="radio" name="preset" value="laravel" aria-checked="false" />
+                            <span class="preset-icon">L</span>
+                            <span class="preset-name">Laravel</span>
+                            <span class="preset-desc">PHP + DB + Redis</span>
+                        </label>
+                        <label class="preset-card" data-preset="symfony">
+                            <input type="radio" name="preset" value="symfony" aria-checked="false" />
+                            <span class="preset-icon">S</span>
+                            <span class="preset-name">Symfony</span>
+                            <span class="preset-desc">PHP + DB</span>
+                        </label>
+                        <label class="preset-card" data-preset="nextjs">
+                            <input type="radio" name="preset" value="nextjs" aria-checked="false" />
+                            <span class="preset-icon">N</span>
+                            <span class="preset-name">Next.js</span>
+                            <span class="preset-desc">React SSR</span>
+                        </label>
+                        <label class="preset-card" data-preset="nestjs">
+                            <input type="radio" name="preset" value="nestjs" aria-checked="false" />
+                            <span class="preset-icon">Ns</span>
+                            <span class="preset-name">Nest.js</span>
+                            <span class="preset-desc">Node API</span>
+                        </label>
+                        <label class="preset-card" data-preset="angular">
+                            <input type="radio" name="preset" value="angular" aria-checked="false" />
+                            <span class="preset-icon">Ng</span>
+                            <span class="preset-name">Angular</span>
+                            <span class="preset-desc">SPA + Nginx</span>
+                        </label>
+                        <label class="preset-card" data-preset="django">
+                            <input type="radio" name="preset" value="django" aria-checked="false" />
+                            <span class="preset-icon">Dj</span>
+                            <span class="preset-name">Django</span>
+                            <span class="preset-desc">Python + Postgres</span>
+                        </label>
+                        <label class="preset-card" data-preset="flask">
+                            <input type="radio" name="preset" value="flask" aria-checked="false" />
+                            <span class="preset-icon">Fl</span>
+                            <span class="preset-name">Flask</span>
+                            <span class="preset-desc">Python micro</span>
+                        </label>
+                        <label class="preset-card" data-preset="springboot">
+                            <input type="radio" name="preset" value="springboot" aria-checked="false" />
+                            <span class="preset-icon">Sb</span>
+                            <span class="preset-name">Spring Boot</span>
+                            <span class="preset-desc">Java + DB</span>
+                        </label>
+                    </div>
+
+                    <!-- Preset sub-options -->
+                    <div class="preset-options" id="presetOptions-wordpress" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="wpDbEngine">Base de données</label>
+                                <select id="wpDbEngine">
+                                    <option value="mysql" selected>MySQL</option>
+                                    <option value="mariadb">MariaDB</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-laravel" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="laravelVersion">Version Laravel</label>
+                                <select id="laravelVersion">
+                                    <option value="10">10 LTS</option>
+                                    <option value="11" selected>11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="laravelStarter">Starter Kit</label>
+                                <select id="laravelStarter">
+                                    <option value="none" selected>Aucun</option>
+                                    <option value="breeze-react">Breeze + React</option>
+                                    <option value="breeze-vue">Breeze + Vue</option>
+                                    <option value="breeze-livewire">Breeze + Livewire</option>
+                                    <option value="jetstream-livewire">Jetstream + Livewire</option>
+                                    <option value="jetstream-inertia-react">Jetstream + Inertia (React)</option>
+                                    <option value="jetstream-inertia-vue">Jetstream + Inertia (Vue)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="laravelDb">Base de données</label>
+                                <select id="laravelDb">
+                                    <option value="mysql" selected>MySQL</option>
+                                    <option value="mariadb">MariaDB</option>
+                                    <option value="postgres">PostgreSQL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-symfony" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="symfonyVersion">Version Symfony</label>
+                                <select id="symfonyVersion">
+                                    <option value="6.4">6.4 LTS</option>
+                                    <option value="7.0">7.0</option>
+                                    <option value="7.1">7.1</option>
+                                    <option value="7.2" selected>7.2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="symfonyDb">Base de données</label>
+                                <select id="symfonyDb">
+                                    <option value="postgres" selected>PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="mariadb">MariaDB</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-nextjs" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nextjsDb">Base de données</label>
+                                <select id="nextjsDb">
+                                    <option value="none" selected>Aucune</option>
+                                    <option value="postgres">PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="mongo">MongoDB</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-nestjs" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nestjsDb">Base de données</label>
+                                <select id="nestjsDb">
+                                    <option value="postgres" selected>PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="mongo">MongoDB</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nestjsOrm">ORM</label>
+                                <select id="nestjsOrm">
+                                    <option value="typeorm" selected>TypeORM</option>
+                                    <option value="prisma">Prisma</option>
+                                    <option value="mongoose">Mongoose (MongoDB)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-angular" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="angularVersion">Version Angular</label>
+                                <select id="angularVersion">
+                                    <option value="17">17 (EOL)</option>
+                                    <option value="18">18 (EOL)</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21" selected>21 (Latest)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-django" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="djangoVersion">Version Django</label>
+                                <select id="djangoVersion">
+                                    <option value="4.2">4.2 LTS</option>
+                                    <option value="5.0">5.0</option>
+                                    <option value="5.1" selected>5.1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pythonVersion">Version Python</label>
+                                <select id="pythonVersion">
+                                    <option value="3.10">3.10</option>
+                                    <option value="3.11">3.11</option>
+                                    <option value="3.12">3.12</option>
+                                    <option value="3.13" selected>3.13</option>
+                                    <option value="3.14">3.14 (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="djangoDb">Base de données</label>
+                                <select id="djangoDb">
+                                    <option value="postgres" selected>PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-flask" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="flaskPythonVersion">Version Python</label>
+                                <select id="flaskPythonVersion">
+                                    <option value="3.10">3.10</option>
+                                    <option value="3.11">3.11</option>
+                                    <option value="3.12">3.12</option>
+                                    <option value="3.13" selected>3.13</option>
+                                    <option value="3.14">3.14 (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="flaskDb">Base de données</label>
+                                <select id="flaskDb">
+                                    <option value="none" selected>Aucune</option>
+                                    <option value="postgres">PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="mongo">MongoDB</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preset-options" id="presetOptions-springboot" style="display: none">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="springJavaVersion">Version Java</label>
+                                <select id="springJavaVersion">
+                                    <option value="11">11 LTS</option>
+                                    <option value="17">17 LTS</option>
+                                    <option value="21" selected>21 LTS</option>
+                                    <option value="25">25 LTS (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="springDb">Base de données</label>
+                                <select id="springDb">
+                                    <option value="postgres" selected>PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="mariadb">MariaDB</option>
+                                    <option value="mongo">MongoDB</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="springBuild">Build tool</label>
+                                <select id="springBuild">
+                                    <option value="maven" selected>Maven</option>
+                                    <option value="gradle">Gradle</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-webserver">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                    </svg>
+                    <h2>Serveur Web</h2>
+                </div>
+                <div class="card-body">
+                    <div class="radio-group" role="radiogroup" aria-label="Sélection du serveur web">
+                        <label class="radio-card active" data-value="nginx">
+                            <input type="radio" name="webserver" value="nginx" checked aria-checked="true" />
+                            <span class="radio-icon">N</span>
+                            <span class="radio-label">Nginx</span>
+                            <span class="radio-desc">Haute perfo.</span>
+                        </label>
+                        <label class="radio-card" data-value="apache">
+                            <input type="radio" name="webserver" value="apache" aria-checked="false" />
+                            <span class="radio-icon">A</span>
+                            <span class="radio-label">Apache</span>
+                            <span class="radio-desc">.htaccess</span>
+                        </label>
+                        <label class="radio-card" data-value="caddy">
+                            <input type="radio" name="webserver" value="caddy" aria-checked="false" />
+                            <span class="radio-icon">C</span>
+                            <span class="radio-label">Caddy</span>
+                            <span class="radio-desc">SSL auto</span>
+                        </label>
+                        <label class="radio-card" data-value="traefik">
+                            <input type="radio" name="webserver" value="traefik" aria-checked="false" />
+                            <span class="radio-icon">T</span>
+                            <span class="radio-label">Traefik</span>
+                            <span class="radio-desc">Microservices</span>
+                        </label>
+                        <label class="radio-card" data-value="none">
+                            <input type="radio" name="webserver" value="none" aria-checked="false" />
+                            <span class="radio-icon">—</span>
+                            <span class="radio-label">Aucun</span>
+                            <span class="radio-desc">Sans proxy</span>
+                        </label>
+                    </div>
+                    <div class="nginx-socket-option" id="nginxSocketOption">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableNginxSocket" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Nginx : communication via Unix socket (au lieu de TCP)</span>
+                        </label>
+                    </div>
+                    <div class="form-row port-row" id="webserverPorts">
+                        <div class="form-group form-group-port">
+                            <label for="httpPort">Port HTTP</label>
+                            <input type="number" id="httpPort" value="80" placeholder="80" min="1" max="65535" />
+                        </div>
+                        <div class="form-group form-group-port">
+                            <label for="httpsPort">Port HTTPS</label>
+                            <input type="number" id="httpsPort" value="443" placeholder="443" min="1" max="65535" />
+                        </div>
+                        <div class="form-group form-group-port">
+                            <label for="traefikDashPort">Traefik Dashboard</label>
+                            <input type="number" id="traefikDashPort" value="8080" placeholder="8080" min="1" max="65535" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-backend">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <h2>Backend (Serveur)</h2>
+                </div>
+                <div class="card-body">
+                    <!-- PHP -->
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enablePhp" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">PHP-FPM</span>
+                        </label>
+                        <div class="service-options" id="phpOptions">
+                            <div class="form-group">
+                                <label for="phpVersion">Version</label>
+                                <select id="phpVersion">
+                                    <option value="8.1">8.1 (EOL 2025)</option>
+                                    <option value="8.2">8.2</option>
+                                    <option value="8.3">8.3</option>
+                                    <option value="8.4" selected>8.4 (LTS)</option>
+                                    <option value="8.5">8.5 (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Extensions</label>
+                                <div class="checkbox-group" id="phpExtensionsGroup">
+                                    <label class="chip"><input type="checkbox" value="gd" checked /> gd</label>
+                                    <label class="chip"><input type="checkbox" value="intl" checked /> intl</label>
+                                    <label class="chip"><input type="checkbox" value="zip" checked /> zip</label>
+                                    <label class="chip"><input type="checkbox" value="pdo_mysql" /> pdo_mysql</label>
+                                    <label class="chip"><input type="checkbox" value="pdo_pgsql" /> pdo_pgsql</label>
+                                    <label class="chip"><input type="checkbox" value="redis" /> redis</label>
+                                    <label class="chip"><input type="checkbox" value="memcached" /> memcached</label>
+                                    <label class="chip"><input type="checkbox" value="opcache" checked /> opcache</label>
+                                    <label class="chip"><input type="checkbox" value="mbstring" checked /> mbstring</label>
+                                    <label class="chip"><input type="checkbox" value="xml" /> xml</label>
+                                    <label class="chip"><input type="checkbox" value="curl" checked /> curl</label>
+                                    <label class="chip"><input type="checkbox" value="imagick" /> imagick</label>
+                                    <label class="chip"><input type="checkbox" value="xdebug" /> xdebug</label>
+                                    <label class="chip"><input type="checkbox" value="bcmath" /> bcmath</label>
+                                    <label class="chip"><input type="checkbox" value="exif" /> exif</label>
+                                    <label class="chip"><input type="checkbox" value="soap" /> soap</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Node.js -->
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableNode" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Node.js</span>
+                        </label>
+                        <div class="service-options" id="nodeOptions">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nodeVersion">Version</label>
+                                    <select id="nodeVersion">
+                                        <option value="18">18 (EOL 2025)</option>
+                                        <option value="20">20 LTS Iron</option>
+                                        <option value="22">22 LTS Jod</option>
+                                        <option value="24" selected>24 LTS Krypton (Latest)</option>
+                                        <option value="25">25 Current</option>
+                                        <option value="nvm">NVM (multi-version)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nodeFramework">Framework</label>
+                                    <select id="nodeFramework">
+                                        <option value="custom" selected>Custom / Express</option>
+                                        <option value="nextjs">Next.js</option>
+                                        <option value="nuxt">Nuxt</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="nvmDefaultVersion" class="form-group" style="display: none; margin-top: 0.5rem">
+                                <label for="nvmDefault">Version par défaut NVM</label>
+                                <input type="text" id="nvmDefault" value="24" placeholder="24" />
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="nodePort">Port</label>
+                                    <input type="number" id="nodePort" value="3000" placeholder="3000" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Python -->
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enablePython" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Python</span>
+                        </label>
+                        <div class="service-options" id="pythonOptions">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="pythonVersionBackend">Version</label>
+                                    <select id="pythonVersionBackend">
+                                        <option value="3.10">3.10</option>
+                                        <option value="3.11">3.11</option>
+                                        <option value="3.12">3.12</option>
+                                        <option value="3.13" selected>3.13</option>
+                                        <option value="3.14">3.14 (Latest)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pythonFrameworkBackend">Framework</label>
+                                    <select id="pythonFrameworkBackend">
+                                        <option value="custom" selected>Custom</option>
+                                        <option value="django">Django</option>
+                                        <option value="flask">Flask</option>
+                                        <option value="fastapi">FastAPI</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="pythonPort">Port</label>
+                                    <input type="number" id="pythonPort" value="8000" placeholder="8000" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Java -->
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableJava" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Java (Spring Boot)</span>
+                        </label>
+                        <div class="service-options" id="javaOptions">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="javaVersionBackend">Version Java</label>
+                                    <select id="javaVersionBackend">
+                                        <option value="11">11 LTS</option>
+                                        <option value="17">17 LTS</option>
+                                        <option value="21" selected>21 LTS</option>
+                                        <option value="25">25 LTS (Latest)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="javaPort">Port</label>
+                                    <input type="number" id="javaPort" value="8080" placeholder="8080" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-database">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                    </svg>
+                    <h2>Base de données</h2>
+                </div>
+                <div class="card-body">
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMysql" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">MySQL</span>
+                        </label>
+                        <div class="service-options" id="mysqlOptions">
+                            <div class="form-group">
+                                <label for="mysqlVersion">Version</label>
+                                <select id="mysqlVersion">
+                                    <option value="8.0">8.0 (EOL avril 2026)</option>
+                                    <option value="8.4" selected>8.4 LTS (Recommandé)</option>
+                                    <option value="9.0">9.0 Innovation</option>
+                                    <option value="9.6">9.6 Innovation (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="mysqlPort">Port</label>
+                                    <input type="number" id="mysqlPort" value="3306" placeholder="3306" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMariadb" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">MariaDB</span>
+                        </label>
+                        <div class="service-options" id="mariadbOptions">
+                            <div class="form-group">
+                                <label for="mariadbVersion">Version</label>
+                                <select id="mariadbVersion">
+                                    <option value="10.11">10.11 LTS</option>
+                                    <option value="11.4">11.4 LTS</option>
+                                    <option value="11.8" selected>11.8 LTS (Recommandé)</option>
+                                    <option value="12.2">12.2 Rolling</option>
+                                    <option value="12.3">12.3 RC (LTS Q2 2026)</option>
+                                </select>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="mariadbPort">Port</label>
+                                    <input type="number" id="mariadbPort" value="3306" placeholder="3306" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enablePostgres" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">PostgreSQL</span>
+                        </label>
+                        <div class="service-options" id="postgresOptions">
+                            <div class="form-group">
+                                <label for="postgresVersion">Version</label>
+                                <select id="postgresVersion">
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18" selected>18 (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="postgresPort">Port</label>
+                                    <input type="number" id="postgresPort" value="5432" placeholder="5432" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMongo" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">MongoDB</span>
+                        </label>
+                        <div class="service-options" id="mongoOptions">
+                            <div class="form-group">
+                                <label for="mongoVersion">Version</label>
+                                <select id="mongoVersion">
+                                    <option value="5.0">5.0</option>
+                                    <option value="6.0">6.0</option>
+                                    <option value="7.0">7.0</option>
+                                    <option value="8.0">8.0</option>
+                                    <option value="8.2" selected>8.2 (Latest)</option>
+                                </select>
+                            </div>
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="mongoPort">Port</label>
+                                    <input type="number" id="mongoPort" value="27017" placeholder="27017" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-cache">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                    <h2>Cache &amp; File d'attente</h2>
+                </div>
+                <div class="card-body">
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableRedis" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Redis 7</span>
+                        </label>
+                        <div class="service-options" id="redisOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="redisPort">Port</label>
+                                    <input type="number" id="redisPort" value="6379" placeholder="6379" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMemcached" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Memcached</span>
+                        </label>
+                        <div class="service-options" id="memcachedOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="memcachedPort">Port</label>
+                                    <input type="number" id="memcachedPort" value="11211" placeholder="11211" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableRabbitmq" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">RabbitMQ</span>
+                        </label>
+                        <div class="service-options" id="rabbitmqOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="rabbitmqPort">Port AMQP</label>
+                                    <input type="number" id="rabbitmqPort" value="5672" placeholder="5672" min="1" max="65535" />
+                                </div>
+                                <div class="form-group form-group-port">
+                                    <label for="rabbitmqUiPort">Port UI</label>
+                                    <input type="number" id="rabbitmqUiPort" value="15672" placeholder="15672" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-tools">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+                    </svg>
+                    <h2>Outils</h2>
+                </div>
+                <div class="card-body">
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableAdminer" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Adminer <span class="hint">(toutes DB)</span></span>
+                        </label>
+                        <div class="service-options" id="adminerOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="adminerPort">Port</label>
+                                    <input type="number" id="adminerPort" value="8081" placeholder="8081" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enablePhpmyadmin" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">phpMyAdmin <span class="hint">(MySQL / MariaDB)</span></span>
+                        </label>
+                        <div class="service-options" id="phpmyadminOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="phpmyadminPort">Port</label>
+                                    <input type="number" id="phpmyadminPort" value="8082" placeholder="8082" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enablePgadmin" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">pgAdmin <span class="hint">(PostgreSQL)</span></span>
+                        </label>
+                        <div class="service-options" id="pgadminOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="pgadminPort">Port</label>
+                                    <input type="number" id="pgadminPort" value="8083" placeholder="8083" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMongoexpress" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Mongo Express <span class="hint">(MongoDB)</span></span>
+                        </label>
+                        <div class="service-options" id="mongoexpressOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="mongoexpressPort">Port</label>
+                                    <input type="number" id="mongoexpressPort" value="8084" placeholder="8084" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMailpit" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Mailpit</span>
+                        </label>
+                        <div class="service-options" id="mailpitOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="mailpitSmtpPort">Port SMTP</label>
+                                    <input type="number" id="mailpitSmtpPort" value="1025" placeholder="1025" min="1" max="65535" />
+                                </div>
+                                <div class="form-group form-group-port">
+                                    <label for="mailpitUiPort">Port UI</label>
+                                    <input type="number" id="mailpitUiPort" value="8025" placeholder="8025" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableMinio" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">MinIO (S3)</span>
+                        </label>
+                        <div class="service-options" id="minioOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="minioPort">Port API</label>
+                                    <input type="number" id="minioPort" value="9000" placeholder="9000" min="1" max="65535" />
+                                </div>
+                                <div class="form-group form-group-port">
+                                    <label for="minioConsolePort">Port Console</label>
+                                    <input type="number" id="minioConsolePort" value="9001" placeholder="9001" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-block">
+                        <label class="toggle-row">
+                            <input type="checkbox" id="enableElasticsearch" class="toggle-input" />
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Elasticsearch 8</span>
+                        </label>
+                        <div class="service-options" id="elasticsearchOptions">
+                            <div class="form-row port-row">
+                                <div class="form-group form-group-port">
+                                    <label for="elasticsearchPort">Port</label>
+                                    <input type="number" id="elasticsearchPort" value="9200" placeholder="9200" min="1" max="65535" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-environment">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                    <h2>Environnement de développement</h2>
+                </div>
+                <div class="card-body">
+                    <div class="preset-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                        <label class="preset-card active" data-env="windows-laragon">
+                            <input type="radio" name="environment" value="windows-laragon" checked />
+                            <span class="preset-icon">La</span>
+                            <span class="preset-name">Laragon</span>
+                            <span class="preset-desc">Windows</span>
+                        </label>
+                        <label class="preset-card" data-env="windows-herd">
+                            <input type="radio" name="environment" value="windows-herd" />
+                            <span class="preset-icon">He</span>
+                            <span class="preset-name">Herd</span>
+                            <span class="preset-desc">Windows/Mac</span>
+                        </label>
+                        <label class="preset-card" data-env="windows-xampp">
+                            <input type="radio" name="environment" value="windows-xampp" />
+                            <span class="preset-icon">Xa</span>
+                            <span class="preset-name">XAMPP</span>
+                            <span class="preset-desc">Cross-platform</span>
+                        </label>
+                        <label class="preset-card" data-env="windows-wamp">
+                            <input type="radio" name="environment" value="windows-wamp" />
+                            <span class="preset-icon">Wa</span>
+                            <span class="preset-name">WAMP</span>
+                            <span class="preset-desc">Windows</span>
+                        </label>
+                        <label class="preset-card" data-env="mac-mamp">
+                            <input type="radio" name="environment" value="mac-mamp" />
+                            <span class="preset-icon">Ma</span>
+                            <span class="preset-name">MAMP</span>
+                            <span class="preset-desc">macOS/Windows</span>
+                        </label>
+                        <label class="preset-card" data-env="linux-lamp">
+                            <input type="radio" name="environment" value="linux-lamp" />
+                            <span class="preset-icon">La</span>
+                            <span class="preset-name">LAMP</span>
+                            <span class="preset-desc">Linux</span>
+                        </label>
+                        <label class="preset-card" data-env="linux-local">
+                            <input type="radio" name="environment" value="linux-local" />
+                            <span class="preset-icon">Li</span>
+                            <span class="preset-name">Linux</span>
+                            <span class="preset-desc">Standalone</span>
+                        </label>
+                        <label class="preset-card" data-env="mac-local">
+                            <input type="radio" name="environment" value="mac-local" />
+                            <span class="preset-icon">Mc</span>
+                            <span class="preset-name">macOS</span>
+                            <span class="preset-desc">Standalone</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <section class="card" id="section-ssl">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                    </svg>
+                    <h2>SSL / HTTPS</h2>
+                    <span class="hint" id="sslHint">Depend de l'environnement</span>
+                </div>
+                <div class="card-body">
+                    <div class="radio-group" id="sslOptions">
+                        <label class="radio-card active" data-value="none">
+                            <input type="radio" name="ssl" value="none" checked />
+                            <span class="radio-icon">--</span>
+                            <span class="radio-label">Aucun (HTTP)</span>
+                        </label>
+                        <label class="radio-card" data-value="mkcert">
+                            <input type="radio" name="ssl" value="mkcert" />
+                            <span class="radio-icon">m</span>
+                            <span class="radio-label">mkcert (dev)</span>
+                        </label>
+                        <label class="radio-card" data-value="letsencrypt">
+                            <input type="radio" name="ssl" value="letsencrypt" />
+                            <span class="radio-icon">L</span>
+                            <span class="radio-label">Let's Encrypt</span>
+                        </label>
+                        <label class="radio-card" data-value="caddy-auto">
+                            <input type="radio" name="ssl" value="caddy-auto" />
+                            <span class="radio-icon">C</span>
+                            <span class="radio-label">Caddy (auto)</span>
+                        </label>
+                        <label class="radio-card" data-value="traefik-auto">
+                            <input type="radio" name="ssl" value="traefik-auto" />
+                            <span class="radio-icon">T</span>
+                            <span class="radio-label">Traefik (auto)</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <section class="card card-preview" id="section-preview">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    <h2>Aperçu &amp; Téléchargement</h2>
+                    <div class="preview-actions">
+                        <button class="btn btn-ghost" id="btnCopy" aria-label="Copier le fichier actif dans le presse-papier">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                            </svg>
+                            <span data-copy-label>Copier</span>
+                        </button>
+                        <button class="btn btn-primary" id="btnDownload">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Télécharger ZIP
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-tabs" id="previewTabs"></div>
+                <div class="preview-content">
+                    <pre><code id="previewCode" class="hljs"></code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>
+            Container Stack Generator
+            <a
+                href="https://404notfood.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Laurent 404NotFood</a
+            >
+            &mdash; Tous les fichiers sont générés côté client, rien n'est envoyé à
+            un serveur.
+        </p>
+    </footer>
+
+    <script src="js/ui-data.js"></script>
+    <script src="js/ui-builder.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

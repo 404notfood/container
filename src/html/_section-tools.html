@@ -12,6 +12,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Adminer <span class="hint">(toutes DB)</span></span>
             </label>
+            <div class="service-options" id="adminerOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="adminerPort">Port</label>
+                        <input type="number" id="adminerPort" value="8081" placeholder="8081" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -19,6 +27,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">phpMyAdmin <span class="hint">(MySQL / MariaDB)</span></span>
             </label>
+            <div class="service-options" id="phpmyadminOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="phpmyadminPort">Port</label>
+                        <input type="number" id="phpmyadminPort" value="8082" placeholder="8082" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -26,6 +42,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">pgAdmin <span class="hint">(PostgreSQL)</span></span>
             </label>
+            <div class="service-options" id="pgadminOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="pgadminPort">Port</label>
+                        <input type="number" id="pgadminPort" value="8083" placeholder="8083" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -33,6 +57,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Mongo Express <span class="hint">(MongoDB)</span></span>
             </label>
+            <div class="service-options" id="mongoexpressOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="mongoexpressPort">Port</label>
+                        <input type="number" id="mongoexpressPort" value="8084" placeholder="8084" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -40,6 +72,18 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Mailpit</span>
             </label>
+            <div class="service-options" id="mailpitOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="mailpitSmtpPort">Port SMTP</label>
+                        <input type="number" id="mailpitSmtpPort" value="1025" placeholder="1025" min="1" max="65535" />
+                    </div>
+                    <div class="form-group form-group-port">
+                        <label for="mailpitUiPort">Port UI</label>
+                        <input type="number" id="mailpitUiPort" value="8025" placeholder="8025" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -47,6 +91,18 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">MinIO (S3)</span>
             </label>
+            <div class="service-options" id="minioOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="minioPort">Port API</label>
+                        <input type="number" id="minioPort" value="9000" placeholder="9000" min="1" max="65535" />
+                    </div>
+                    <div class="form-group form-group-port">
+                        <label for="minioConsolePort">Port Console</label>
+                        <input type="number" id="minioConsolePort" value="9001" placeholder="9001" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -54,6 +110,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Elasticsearch 8</span>
             </label>
+            <div class="service-options" id="elasticsearchOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="elasticsearchPort">Port</label>
+                        <input type="number" id="elasticsearchPort" value="9200" placeholder="9200" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
