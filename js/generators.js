@@ -336,6 +336,12 @@ const Generators = {
       files['stop-containers.sh'] = Templates.unixStopScript(config);
     }
 
+    // --- HestiaCP proxy templates (for VPS deployment) ---
+    if (config.environment === 'linux-local' || config.environment === 'linux-lamp') {
+      files['hestia/container-proxy.tpl'] = Templates.hestiaProxyTpl(config);
+      files['hestia/container-proxy.stpl'] = Templates.hestiaProxyStpl(config);
+    }
+
     // --- README ---
     files['README.md'] = Templates.readme(config);
 

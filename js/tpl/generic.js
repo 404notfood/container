@@ -17,6 +17,147 @@ Object.assign(Templates, {
     return `#!/bin/bash\n# Generate SSL certificates for local development\n# Requires mkcert: https://github.com/FiloSottile/mkcert\n\nmkcert -install\nmkcert -cert-file cert.pem -key-file key.pem localhost 127.0.0.1 ::1\n\necho "Certificates generated!"\n`;
   },
 
+  hestiaProxyTpl(config) {
+    const port = config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort;
+    return `#=========================================================================#
+# HestiaCP — Nginx Reverse Proxy for Container (HTTP)                     #
+# Project: ${config.projectName}                                          #
+# Proxy target: http://127.0.0.1:${port}                                  #
+#                                                                          #
+# Install:                                                                 #
+#   sudo cp container-proxy.tpl /usr/local/hestia/data/templates/web/nginx/#
+#   sudo cp container-proxy.stpl /usr/local/hestia/data/templates/web/nginx/#
+#   Then: HestiaCP panel > Edit domain > Proxy Template > container-proxy #
+#=========================================================================#
+
+server {
+    listen      %ip%:%web_port%;
+    server_name %domain% %alias%;
+
+    access_log  /var/log/nginx/domains/%domain%.log combined;
+    access_log  /var/log/nginx/domains/%domain%.bytes bytes;
+    error_log   /var/log/nginx/domains/%domain%.error.log error;
+
+    include %home%/%user%/conf/web/%domain%/nginx.forcessl.conf*;
+
+    location ~ /\\.(?!well-known\\/) {
+        deny all;
+        return 404;
+    }
+
+    location / {
+        proxy_pass         http://127.0.0.1:${port};
+        proxy_set_header   Host              \\$host;
+        proxy_set_header   X-Real-IP         \\$remote_addr;
+        proxy_set_header   X-Forwarded-For   \\$proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto \\$scheme;
+        proxy_set_header   X-Forwarded-Host  \\$host;
+        proxy_set_header   X-Forwarded-Port  \\$server_port;
+
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade           \\$http_upgrade;
+        proxy_set_header   Connection        \\$connection_upgrade;
+
+        proxy_connect_timeout 60s;
+        proxy_send_timeout    60s;
+        proxy_read_timeout    60s;
+
+        proxy_buffering    on;
+        proxy_buffer_size  128k;
+        proxy_buffers      4 256k;
+        proxy_busy_buffers_size 256k;
+
+        client_max_body_size 0;
+    }
+
+    location /error/ {
+        alias %home%/%user%/web/%domain%/document_errors/;
+    }
+
+    location /vstats/ {
+        alias   %home%/%user%/web/%domain%/stats/;
+        include %home%/%user%/web/%domain%/stats/auth.conf*;
+    }
+
+    include %home%/%user%/conf/web/%domain%/nginx.conf_*;
+}
+`;
+  },
+
+  hestiaProxyStpl(config) {
+    const port = config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort;
+    return `#=========================================================================#
+# HestiaCP — Nginx Reverse Proxy for Container (HTTPS/SSL)                #
+# Project: ${config.projectName}                                          #
+#=========================================================================#
+
+map \\$http_upgrade \\$connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen      %ip%:%web_ssl_port% ssl;
+    server_name %domain% %alias%;
+
+    ssl_certificate     %ssl_pem%;
+    ssl_certificate_key %ssl_key%;
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options    "nosniff" always;
+    add_header X-Frame-Options           "SAMEORIGIN" always;
+    add_header Referrer-Policy           "strict-origin-when-cross-origin" always;
+
+    access_log  /var/log/nginx/domains/%domain%.log combined;
+    access_log  /var/log/nginx/domains/%domain%.bytes bytes;
+    error_log   /var/log/nginx/domains/%domain%.error.log error;
+
+    location ~ /\\.(?!well-known\\/) {
+        deny all;
+        return 404;
+    }
+
+    location / {
+        proxy_pass         http://127.0.0.1:${port};
+        proxy_set_header   Host              \\$host;
+        proxy_set_header   X-Real-IP         \\$remote_addr;
+        proxy_set_header   X-Forwarded-For   \\$proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto \\$scheme;
+        proxy_set_header   X-Forwarded-Host  \\$host;
+        proxy_set_header   X-Forwarded-Port  \\$server_port;
+
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade           \\$http_upgrade;
+        proxy_set_header   Connection        \\$connection_upgrade;
+
+        proxy_connect_timeout 60s;
+        proxy_send_timeout    60s;
+        proxy_read_timeout    60s;
+
+        proxy_buffering    on;
+        proxy_buffer_size  128k;
+        proxy_buffers      4 256k;
+        proxy_busy_buffers_size 256k;
+
+        client_max_body_size 0;
+    }
+
+    location /error/ {
+        alias %home%/%user%/web/%domain%/document_errors/;
+    }
+
+    location /vstats/ {
+        alias   %home%/%user%/web/%domain%/stats/;
+        include %home%/%user%/web/%domain%/stats/auth.conf*;
+    }
+
+    include %home%/%user%/conf/web/%domain%/nginx.ssl.conf_*;
+}
+`;
+  },
+
   initScript(config) {
     const escapeShell = (str) => {
       if (!str) return '';
