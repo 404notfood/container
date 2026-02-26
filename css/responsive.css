@@ -29,6 +29,8 @@
   .content-area { padding: 1rem; }
   .preset-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
   .header-actions .btn-primary .btn-label { display: none; }
+  .header-actions .btn-sponsor .btn-label { display: none; }
+  .header-actions .btn-sponsor { padding: .4rem .5rem; }
   .progress-bar-wrap { display: none; }
 }
 @media (max-width: 600px) {
