@@ -41,3 +41,5 @@ npm-debug.log*
 *.tar.gz
 *.bak
 *.tmp
+
+error.md
