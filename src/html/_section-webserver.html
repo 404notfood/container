@@ -47,5 +47,19 @@
                 <span class="toggle-label">Nginx : communication via Unix socket (au lieu de TCP)</span>
             </label>
         </div>
+        <div class="form-row port-row" id="webserverPorts">
+            <div class="form-group form-group-port">
+                <label for="httpPort">Port HTTP</label>
+                <input type="number" id="httpPort" value="80" placeholder="80" min="1" max="65535" />
+            </div>
+            <div class="form-group form-group-port">
+                <label for="httpsPort">Port HTTPS</label>
+                <input type="number" id="httpsPort" value="443" placeholder="443" min="1" max="65535" />
+            </div>
+            <div class="form-group form-group-port">
+                <label for="traefikDashPort">Traefik Dashboard</label>
+                <input type="number" id="traefikDashPort" value="8080" placeholder="8080" min="1" max="65535" />
+            </div>
+        </div>
     </div>
 </section>

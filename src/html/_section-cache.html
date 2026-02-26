@@ -12,6 +12,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Redis 7</span>
             </label>
+            <div class="service-options" id="redisOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="redisPort">Port</label>
+                        <input type="number" id="redisPort" value="6379" placeholder="6379" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -19,6 +27,14 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">Memcached</span>
             </label>
+            <div class="service-options" id="memcachedOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="memcachedPort">Port</label>
+                        <input type="number" id="memcachedPort" value="11211" placeholder="11211" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="service-block">
             <label class="toggle-row">
@@ -26,6 +42,18 @@
                 <span class="toggle-slider"></span>
                 <span class="toggle-label">RabbitMQ</span>
             </label>
+            <div class="service-options" id="rabbitmqOptions">
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="rabbitmqPort">Port AMQP</label>
+                        <input type="number" id="rabbitmqPort" value="5672" placeholder="5672" min="1" max="65535" />
+                    </div>
+                    <div class="form-group form-group-port">
+                        <label for="rabbitmqUiPort">Port UI</label>
+                        <input type="number" id="rabbitmqUiPort" value="15672" placeholder="15672" min="1" max="65535" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

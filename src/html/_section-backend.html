@@ -82,6 +82,12 @@
                     <label for="nvmDefault">Version par défaut NVM</label>
                     <input type="text" id="nvmDefault" value="24" placeholder="24" />
                 </div>
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="nodePort">Port</label>
+                        <input type="number" id="nodePort" value="3000" placeholder="3000" min="1" max="65535" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -114,6 +120,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="pythonPort">Port</label>
+                        <input type="number" id="pythonPort" value="8000" placeholder="8000" min="1" max="65535" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -134,6 +146,12 @@
                             <option value="21" selected>21 LTS</option>
                             <option value="25">25 LTS (Latest)</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-row port-row">
+                    <div class="form-group form-group-port">
+                        <label for="javaPort">Port</label>
+                        <input type="number" id="javaPort" value="8080" placeholder="8080" min="1" max="65535" />
                     </div>
                 </div>
             </div>
