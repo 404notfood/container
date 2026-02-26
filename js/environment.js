@@ -31,7 +31,7 @@
 
     // HestiaCP options panel
     var hestiaOptions = document.getElementById('hestiaOptions');
-    if (hestiaOptions) hestiaOptions.style.display = env === 'vps-hestia' ? 'block' : 'none';
+    if (hestiaOptions) hestiaOptions.classList.toggle('open', env === 'vps-hestia');
 
     if (externalSslEnvs.includes(env)) {
       if (sslOptions) {

@@ -1084,6 +1084,27 @@
                             <span class="preset-name">macOS</span>
                             <span class="preset-desc">Standalone</span>
                         </label>
+                        <label class="preset-card" data-env="vps-hestia">
+                            <input type="radio" name="environment" value="vps-hestia" />
+                            <span class="preset-icon">Hs</span>
+                            <span class="preset-name">HestiaCP</span>
+                            <span class="preset-desc">VPS Panel</span>
+                        </label>
+                    </div>
+                    <div class="service-options" id="hestiaOptions">
+                        <div class="info-box" style="margin-bottom: 1rem;">
+                            <strong>HestiaCP</strong> : les templates Nginx proxy seront inclus dans le ZIP. Le SSL est g&eacute;r&eacute; par HestiaCP (Let's Encrypt).
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hestiaUser">Utilisateur HestiaCP</label>
+                                <input type="text" id="hestiaUser" value="admin" placeholder="admin" />
+                            </div>
+                            <div class="form-group">
+                                <label for="hestiaProxyPort">Port proxy vers container</label>
+                                <input type="number" id="hestiaProxyPort" value="8080" placeholder="8080" min="1" max="65535" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
