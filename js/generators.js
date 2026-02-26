@@ -98,6 +98,10 @@ const Generators = {
       minioConsolePort: document.getElementById('minioConsolePort').value || '9001',
       elasticsearchPort: document.getElementById('elasticsearchPort').value || '9200',
 
+      // HestiaCP
+      hestiaUser: document.getElementById('hestiaUser')?.value?.trim() || 'admin',
+      hestiaProxyPort: document.getElementById('hestiaProxyPort')?.value || '8080',
+
       // Backend
       php: document.getElementById('enablePhp').checked,
       phpVersion: document.getElementById('phpVersion').value,
@@ -331,6 +335,12 @@ const Generators = {
     if (windowsEnvs.includes(config.environment)) {
       files['start-containers.ps1'] = Templates.windowsStartScript(config);
       files['stop-containers.ps1'] = Templates.windowsStopScript(config);
+    } else if (config.environment === 'vps-hestia') {
+      files['start-containers.sh'] = Templates.hestiaStartScript(config);
+      files['stop-containers.sh'] = Templates.hestiaStopScript(config);
+      files['hestia/container-proxy.tpl'] = Templates.hestiaProxyTpl(config);
+      files['hestia/container-proxy.stpl'] = Templates.hestiaProxyStpl(config);
+      files['hestia/install.sh'] = Templates.hestiaInstallScript(config);
     } else if (unixEnvs.includes(config.environment)) {
       files['start-containers.sh'] = Templates.unixStartScript(config);
       files['stop-containers.sh'] = Templates.unixStopScript(config);
@@ -346,6 +356,7 @@ const Generators = {
     if (filename.endsWith('.yml') || filename.endsWith('.yaml')) return 'yaml';
     if (filename === 'Dockerfile' || filename.endsWith('/Dockerfile')) return 'dockerfile';
     if (filename.endsWith('.conf')) return 'nginx';
+    if (filename.endsWith('.tpl') || filename.endsWith('.stpl')) return 'nginx';
     if (filename.endsWith('.env') || filename.endsWith('.env.local') || filename.endsWith('.env.example')) return 'ini';
     if (filename.endsWith('.sh')) return 'bash';
     if (filename.endsWith('.ps1')) return 'powershell';

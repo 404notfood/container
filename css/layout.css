@@ -62,3 +62,22 @@ footer {
   color: var(--text-muted);
   font-size: .78rem;
 }
+footer p + p { margin-top: .35rem; }
+.footer-sponsor { margin-top: .75rem; }
+.footer-sponsor a {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  color: #db61a2;
+  text-decoration: none;
+  padding: .4rem .9rem;
+  border: 1px solid rgba(219,97,162,.35);
+  border-radius: 20px;
+  transition: background .2s, border-color .2s, color .2s;
+  font-size: .82rem;
+}
+.footer-sponsor a:hover {
+  background: rgba(219,97,162,.1);
+  border-color: #db61a2;
+  color: #e88fc2;
+}

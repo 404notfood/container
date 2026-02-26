@@ -564,7 +564,8 @@ var UI_SECTIONS = [
         { value: 'mac-mamp', icon: 'Ma', name: 'MAMP', desc: 'macOS/Windows' },
         { value: 'linux-lamp', icon: 'La', name: 'LAMP', desc: 'Linux' },
         { value: 'linux-local', icon: 'Li', name: 'Linux', desc: 'Standalone' },
-        { value: 'mac-local', icon: 'Mc', name: 'macOS', desc: 'Standalone' }
+        { value: 'mac-local', icon: 'Mc', name: 'macOS', desc: 'Standalone' },
+        { value: 'vps-hestia', icon: 'Hs', name: 'HestiaCP', desc: 'VPS Panel' }
       ]
     }
   },
