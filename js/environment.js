@@ -14,7 +14,7 @@
     var sslHint = document.getElementById('sslHint');
     var sslOptions = document.getElementById('sslOptions');
 
-    var externalSslEnvs = ['windows-laragon', 'windows-herd', 'windows-xampp', 'windows-wamp', 'mac-mamp', 'linux-lamp'];
+    var externalSslEnvs = ['windows-laragon', 'windows-herd', 'windows-xampp', 'windows-wamp', 'mac-mamp', 'linux-lamp', 'vps-hestia'];
     var sslMessages = {
       'windows-laragon': 'SSL géré par Laragon',
       'windows-herd': 'SSL géré par Herd',
@@ -24,9 +24,14 @@
       'linux-lamp': 'SSL via config système (Apache/Nginx)',
       'linux-local': 'SSL géré par les containers',
       'mac-local': 'SSL géré par les containers',
+      'vps-hestia': 'SSL géré par HestiaCP (Let\'s Encrypt)',
     };
 
     if (sslHint) sslHint.textContent = sslMessages[env] || "Dépend de l'environnement";
+
+    // HestiaCP options panel
+    var hestiaOptions = document.getElementById('hestiaOptions');
+    if (hestiaOptions) hestiaOptions.style.display = env === 'vps-hestia' ? 'block' : 'none';
 
     if (externalSslEnvs.includes(env)) {
       if (sslOptions) {

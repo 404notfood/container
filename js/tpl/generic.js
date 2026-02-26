@@ -18,7 +18,7 @@ Object.assign(Templates, {
   },
 
   hestiaProxyTpl(config) {
-    const port = config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort;
+    const port = config.hestiaProxyPort || (config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort);
     return `#=========================================================================#
 # HestiaCP — Nginx Reverse Proxy for Container (HTTP)                     #
 # Project: ${config.projectName}                                          #
@@ -85,7 +85,7 @@ server {
   },
 
   hestiaProxyStpl(config) {
-    const port = config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort;
+    const port = config.hestiaProxyPort || (config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort);
     return `#=========================================================================#
 # HestiaCP — Nginx Reverse Proxy for Container (HTTPS/SSL)                #
 # Project: ${config.projectName}                                          #
@@ -155,6 +155,73 @@ server {
 
     include %home%/%user%/conf/web/%domain%/nginx.ssl.conf_*;
 }
+`;
+  },
+
+  hestiaInstallScript(config) {
+    const port = config.hestiaProxyPort || (config.node ? config.nodePort : config.python ? config.pythonPort : config.java ? config.javaPort : config.httpPort);
+    const user = config.hestiaUser || 'admin';
+    const domain = config.domain || 'example.com';
+    return `#!/bin/bash
+# =============================================================
+# HestiaCP — Installation des templates proxy pour ${config.projectName}
+# =============================================================
+# Usage: sudo bash hestia/install.sh [--domain DOMAIN] [--user USER]
+#
+# Ce script:
+#   1. Copie les templates Nginx dans HestiaCP
+#   2. Configure le domaine pour utiliser le template container-proxy
+# =============================================================
+
+set -e
+
+DOMAIN="${domain}"
+HESTIA_USER="${user}"
+PROXY_PORT="${port}"
+TPL_DIR="/usr/local/hestia/data/templates/web/nginx"
+
+# --- Parse arguments ---
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --domain) DOMAIN="$2"; shift 2 ;;
+    --user) HESTIA_USER="$2"; shift 2 ;;
+    --port) PROXY_PORT="$2"; shift 2 ;;
+    *) echo "Option inconnue: $1"; exit 1 ;;
+  esac
+done
+
+echo "=== Installation template HestiaCP ==="
+echo "  Domaine : $DOMAIN"
+echo "  User    : $HESTIA_USER"
+echo "  Port    : $PROXY_PORT"
+echo ""
+
+# --- Verifications ---
+if [ "$(id -u)" -ne 0 ]; then
+  echo "ERREUR : ce script doit etre execute en root (sudo)."
+  exit 1
+fi
+
+if ! command -v v-change-web-domain-proxy-tpl &> /dev/null; then
+  echo "ERREUR : HestiaCP n'est pas installe sur ce serveur."
+  exit 1
+fi
+
+# --- Copie des templates ---
+echo ">> Copie des templates Nginx..."
+cp -f "$(dirname "$0")/container-proxy.tpl" "$TPL_DIR/container-proxy.tpl"
+cp -f "$(dirname "$0")/container-proxy.stpl" "$TPL_DIR/container-proxy.stpl"
+chmod 644 "$TPL_DIR/container-proxy.tpl" "$TPL_DIR/container-proxy.stpl"
+echo "   Templates copies dans $TPL_DIR"
+
+# --- Application du template ---
+echo ">> Application du template au domaine $DOMAIN..."
+v-change-web-domain-proxy-tpl "$HESTIA_USER" "$DOMAIN" container-proxy
+
+echo ""
+echo "=== Template installe avec succes ! ==="
+echo "Le domaine $DOMAIN utilise maintenant le proxy vers le port $PROXY_PORT."
+echo "Demarrez les containers avec: bash start-containers.sh"
 `;
   },
 

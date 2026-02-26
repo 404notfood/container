@@ -211,6 +211,103 @@ fi
     return script;
   },
 
+  hestiaStartScript(config) {
+    const cmd = this.getCmd(config);
+    const composeCmd = this.getComposeCmd(config);
+    const runtimeName = config.runtime === 'docker' ? 'Docker' : 'Podman';
+    const networkCheck = config.runtime === 'docker'
+      ? `docker network inspect app-network`
+      : `podman network exists app-network`;
+    const domain = config.domain || 'example.com';
+
+    let script = `#!/bin/bash
+# Script de demarrage ${runtimeName} pour HestiaCP VPS
+# Projet: ${config.projectName}
+# Le SSL et le reverse proxy sont geres par HestiaCP
+
+set -e
+
+echo "Demarrage des containers ${runtimeName} pour ${config.projectName} (HestiaCP)..."
+
+# Verifier que ${runtimeName} est installe
+if ! command -v ${cmd} &> /dev/null; then
+    echo "Erreur: ${runtimeName} n'est pas installe"
+    exit 1
+fi
+
+# Charger les variables d'environnement
+if [ -f .env ]; then
+    export \$(cat .env | grep -v '^#' | xargs)
+fi
+
+# Creer le reseau si necessaire
+if ! ${networkCheck} &>/dev/null; then
+    echo "Creation du reseau app-network..."
+    ${cmd} network create app-network
+fi
+
+`;
+
+    const volumes = [];
+    if (config.mysql || config.mariadb) volumes.push('mysql-data');
+    if (config.postgres) volumes.push('postgres-data');
+    if (config.mongo) volumes.push('mongo-data');
+    if (config.redis) volumes.push('redis-data');
+    if (config.minio) volumes.push('minio-data');
+    if (config.elasticsearch) volumes.push('elasticsearch-data');
+
+    if (volumes.length > 0) {
+      script += `# Creer les volumes necessaires\n`;
+      volumes.forEach(vol => {
+        const check = config.runtime === 'docker'
+          ? `${cmd} volume inspect ${vol}`
+          : `${cmd} volume exists ${vol}`;
+        script += `if ! ${check} &>/dev/null; then\n`;
+        script += `    echo "Creation du volume ${vol}..."\n`;
+        script += `    ${cmd} volume create ${vol}\n`;
+        script += `fi\n\n`;
+      });
+    }
+
+    script += `# Demarrer les containers\n`;
+    script += `echo "Demarrage des services..."\n`;
+    script += `${composeCmd} up -d\n\n`;
+
+    script += `echo "Containers demarres avec succes!"\n`;
+    script += `echo ""\n`;
+    script += `echo "Acces:"\n`;
+    script += `echo "  - Application: https://${domain}"\n`;
+    script += `echo "  (SSL et proxy geres par HestiaCP)"\n`;
+
+    if (config.adminer) script += `echo "  - Adminer: http://localhost:${config.adminerPort}"\n`;
+    if (config.phpmyadmin) script += `echo "  - phpMyAdmin: http://localhost:${config.phpmyadminPort}"\n`;
+    if (config.pgadmin) script += `echo "  - pgAdmin: http://localhost:${config.pgadminPort}"\n`;
+    if (config.mongoexpress) script += `echo "  - Mongo Express: http://localhost:${config.mongoexpressPort}"\n`;
+    if (config.mailpit) script += `echo "  - Mailpit: http://localhost:${config.mailpitUiPort}"\n`;
+    if (config.minio) script += `echo "  - MinIO Console: http://localhost:${config.minioConsolePort}"\n`;
+
+    script += `\necho ""\n`;
+    script += `echo "Pour installer le template HestiaCP: sudo bash hestia/install.sh"\n`;
+
+    return script;
+  },
+
+  hestiaStopScript(config) {
+    const composeCmd = this.getComposeCmd(config);
+    const runtimeName = config.runtime === 'docker' ? 'Docker' : 'Podman';
+
+    return `#!/bin/bash
+# Script d'arret ${runtimeName} pour HestiaCP VPS
+# Arrete et supprime les containers
+
+echo "Arret des containers ${runtimeName} pour ${config.projectName}..."
+
+${composeCmd} down
+
+echo "Containers arretes!"
+`;
+  },
+
   unixStopScript(config) {
     const envNames = { 'linux-local': 'Linux', 'linux-lamp': 'Linux (LAMP)', 'mac-local': 'macOS', 'mac-mamp': 'macOS (MAMP)' };
     const envName = envNames[config.environment] || 'Unix';
