@@ -37,7 +37,7 @@
     var visited = new Set();
 
     function updateActiveSection() {
-      var scrollPos = window.scrollY + 120;
+      var scrollPos = window.scrollY + 80;
       var activeIndex = 0;
 
       sections.forEach((section, index) => {
