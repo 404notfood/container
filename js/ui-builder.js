@@ -122,6 +122,15 @@ var UIBuilder = {
             '<span class="toggle-label">' + a.label + '</span>' +
             '</label></div>';
         }
+        if (a.type === 'port-row') {
+          var fields = a.fields.map(function (f) {
+            return '<div class="form-group form-group-port">' +
+              '<label for="' + f.id + '">' + f.label + '</label>' +
+              '<input type="number" id="' + f.id + '" value="' + f.value + '" placeholder="' + f.placeholder + '" min="1" max="65535" />' +
+              '</div>';
+          }).join('');
+          return '<div class="form-row port-row"' + (a.id ? ' id="' + a.id + '"' : '') + '>' + fields + '</div>';
+        }
         return '';
       }).join('');
     }
@@ -214,6 +223,15 @@ var UIBuilder = {
         '<label for="' + c.inputId + '">' + c.label + '</label>' +
         '<input type="text" id="' + c.inputId + '" value="' + c.value + '" placeholder="' + c.placeholder + '" />' +
         '</div>';
+    }
+    if (c.type === 'port-row') {
+      var fields = c.fields.map(function (f) {
+        return '<div class="form-group form-group-port">' +
+          '<label for="' + f.id + '">' + f.label + '</label>' +
+          '<input type="number" id="' + f.id + '" value="' + f.value + '" placeholder="' + f.placeholder + '" min="1" max="65535" />' +
+          '</div>';
+      }).join('');
+      return '<div class="form-row port-row"' + (c.id ? ' id="' + c.id + '"' : '') + '>' + fields + '</div>';
     }
     return '';
   },

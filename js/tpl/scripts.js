@@ -201,12 +201,12 @@ fi
       }
     }
 
-    if (config.adminer) script += `echo "  - Adminer: http://localhost:8081"\n`;
-    if (config.phpmyadmin) script += `echo "  - phpMyAdmin: http://localhost:8082"\n`;
-    if (config.pgadmin) script += `echo "  - pgAdmin: http://localhost:8083"\n`;
-    if (config.mongoexpress) script += `echo "  - Mongo Express: http://localhost:8084"\n`;
-    if (config.mailpit) script += `echo "  - Mailpit: http://localhost:8025"\n`;
-    if (config.minio) script += `echo "  - MinIO Console: http://localhost:9001"\n`;
+    if (config.adminer) script += `echo "  - Adminer: http://localhost:${config.adminerPort}"\n`;
+    if (config.phpmyadmin) script += `echo "  - phpMyAdmin: http://localhost:${config.phpmyadminPort}"\n`;
+    if (config.pgadmin) script += `echo "  - pgAdmin: http://localhost:${config.pgadminPort}"\n`;
+    if (config.mongoexpress) script += `echo "  - Mongo Express: http://localhost:${config.mongoexpressPort}"\n`;
+    if (config.mailpit) script += `echo "  - Mailpit: http://localhost:${config.mailpitUiPort}"\n`;
+    if (config.minio) script += `echo "  - MinIO Console: http://localhost:${config.minioConsolePort}"\n`;
 
     return script;
   },

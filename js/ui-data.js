@@ -234,7 +234,12 @@ var UI_SECTIONS = [
         { value: 'none', icon: '\u2014', label: 'Aucun', desc: 'Sans proxy' }
       ],
       after: [
-        { type: 'nginx-socket', id: 'nginxSocketOption', toggleId: 'enableNginxSocket', label: 'Nginx : communication via Unix socket (au lieu de TCP)' }
+        { type: 'nginx-socket', id: 'nginxSocketOption', toggleId: 'enableNginxSocket', label: 'Nginx : communication via Unix socket (au lieu de TCP)' },
+        { type: 'port-row', id: 'webserverPorts', fields: [
+          { tag: 'input', id: 'httpPort', label: 'Port HTTP', type: 'number', value: '80', placeholder: '80' },
+          { tag: 'input', id: 'httpsPort', label: 'Port HTTPS', type: 'number', value: '443', placeholder: '443' },
+          { tag: 'input', id: 'traefikDashPort', label: 'Traefik Dashboard', type: 'number', value: '8080', placeholder: '8080' }
+        ]}
       ]
     }
   },
@@ -291,7 +296,10 @@ var UI_SECTIONS = [
                 { value: 'nuxt', text: 'Nuxt' }
               ]}
             ]},
-            { type: 'nvm-default', id: 'nvmDefaultVersion', inputId: 'nvmDefault', label: 'Version par défaut NVM', value: '24', placeholder: '24' }
+            { type: 'nvm-default', id: 'nvmDefaultVersion', inputId: 'nvmDefault', label: 'Version par défaut NVM', value: '24', placeholder: '24' },
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'nodePort', label: 'Port', type: 'number', value: '3000', placeholder: '3000' }
+            ]}
           ]
         },
         {
@@ -312,6 +320,9 @@ var UI_SECTIONS = [
                 { value: 'flask', text: 'Flask' },
                 { value: 'fastapi', text: 'FastAPI' }
               ]}
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'pythonPort', label: 'Port', type: 'number', value: '8000', placeholder: '8000' }
             ]}
           ]
         },
@@ -326,6 +337,9 @@ var UI_SECTIONS = [
                 { value: '21', text: '21 LTS', selected: true },
                 { value: '25', text: '25 LTS (Latest)' }
               ]}
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'javaPort', label: 'Port', type: 'number', value: '8080', placeholder: '8080' }
             ]}
           ]
         }
@@ -352,6 +366,9 @@ var UI_SECTIONS = [
               { value: '8.4', text: '8.4 LTS (Recommandé)', selected: true },
               { value: '9.0', text: '9.0 Innovation' },
               { value: '9.6', text: '9.6 Innovation (Latest)' }
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'mysqlPort', label: 'Port', type: 'number', value: '3306', placeholder: '3306' }
             ]}
           ]
         },
@@ -365,6 +382,9 @@ var UI_SECTIONS = [
               { value: '11.8', text: '11.8 LTS (Recommandé)', selected: true },
               { value: '12.2', text: '12.2 Rolling' },
               { value: '12.3', text: '12.3 RC (LTS Q2 2026)' }
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'mariadbPort', label: 'Port', type: 'number', value: '3306', placeholder: '3306' }
             ]}
           ]
         },
@@ -378,6 +398,9 @@ var UI_SECTIONS = [
               { value: '16', text: '16' },
               { value: '17', text: '17' },
               { value: '18', text: '18 (Latest)', selected: true }
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'postgresPort', label: 'Port', type: 'number', value: '5432', placeholder: '5432' }
             ]}
           ]
         },
@@ -391,6 +414,9 @@ var UI_SECTIONS = [
               { value: '7.0', text: '7.0' },
               { value: '8.0', text: '8.0' },
               { value: '8.2', text: '8.2 (Latest)', selected: true }
+            ]},
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'mongoPort', label: 'Port', type: 'number', value: '27017', placeholder: '27017' }
             ]}
           ]
         }
@@ -408,9 +434,34 @@ var UI_SECTIONS = [
     body: {
       type: 'service-blocks',
       blocks: [
-        { toggleId: 'enableRedis', toggleLabel: 'Redis 7' },
-        { toggleId: 'enableMemcached', toggleLabel: 'Memcached' },
-        { toggleId: 'enableRabbitmq', toggleLabel: 'RabbitMQ' }
+        {
+          toggleId: 'enableRedis', toggleLabel: 'Redis 7',
+          optionsId: 'redisOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'redisPort', label: 'Port', type: 'number', value: '6379', placeholder: '6379' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableMemcached', toggleLabel: 'Memcached',
+          optionsId: 'memcachedOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'memcachedPort', label: 'Port', type: 'number', value: '11211', placeholder: '11211' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableRabbitmq', toggleLabel: 'RabbitMQ',
+          optionsId: 'rabbitmqOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'rabbitmqPort', label: 'Port AMQP', type: 'number', value: '5672', placeholder: '5672' },
+              { tag: 'input', id: 'rabbitmqUiPort', label: 'Port UI', type: 'number', value: '15672', placeholder: '15672' }
+            ]}
+          ]
+        }
       ]
     }
   },
@@ -425,13 +476,71 @@ var UI_SECTIONS = [
     body: {
       type: 'service-blocks',
       blocks: [
-        { toggleId: 'enableAdminer', toggleLabel: 'Adminer', toggleHint: '(toutes DB)' },
-        { toggleId: 'enablePhpmyadmin', toggleLabel: 'phpMyAdmin', toggleHint: '(MySQL / MariaDB)' },
-        { toggleId: 'enablePgadmin', toggleLabel: 'pgAdmin', toggleHint: '(PostgreSQL)' },
-        { toggleId: 'enableMongoexpress', toggleLabel: 'Mongo Express', toggleHint: '(MongoDB)' },
-        { toggleId: 'enableMailpit', toggleLabel: 'Mailpit' },
-        { toggleId: 'enableMinio', toggleLabel: 'MinIO (S3)' },
-        { toggleId: 'enableElasticsearch', toggleLabel: 'Elasticsearch 8' }
+        {
+          toggleId: 'enableAdminer', toggleLabel: 'Adminer', toggleHint: '(toutes DB)',
+          optionsId: 'adminerOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'adminerPort', label: 'Port', type: 'number', value: '8081', placeholder: '8081' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enablePhpmyadmin', toggleLabel: 'phpMyAdmin', toggleHint: '(MySQL / MariaDB)',
+          optionsId: 'phpmyadminOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'phpmyadminPort', label: 'Port', type: 'number', value: '8082', placeholder: '8082' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enablePgadmin', toggleLabel: 'pgAdmin', toggleHint: '(PostgreSQL)',
+          optionsId: 'pgadminOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'pgadminPort', label: 'Port', type: 'number', value: '8083', placeholder: '8083' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableMongoexpress', toggleLabel: 'Mongo Express', toggleHint: '(MongoDB)',
+          optionsId: 'mongoexpressOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'mongoexpressPort', label: 'Port', type: 'number', value: '8084', placeholder: '8084' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableMailpit', toggleLabel: 'Mailpit',
+          optionsId: 'mailpitOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'mailpitSmtpPort', label: 'Port SMTP', type: 'number', value: '1025', placeholder: '1025' },
+              { tag: 'input', id: 'mailpitUiPort', label: 'Port UI', type: 'number', value: '8025', placeholder: '8025' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableMinio', toggleLabel: 'MinIO (S3)',
+          optionsId: 'minioOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'minioPort', label: 'Port API', type: 'number', value: '9000', placeholder: '9000' },
+              { tag: 'input', id: 'minioConsolePort', label: 'Port Console', type: 'number', value: '9001', placeholder: '9001' }
+            ]}
+          ]
+        },
+        {
+          toggleId: 'enableElasticsearch', toggleLabel: 'Elasticsearch 8',
+          optionsId: 'elasticsearchOptions',
+          content: [
+            { type: 'port-row', fields: [
+              { tag: 'input', id: 'elasticsearchPort', label: 'Port', type: 'number', value: '9200', placeholder: '9200' }
+            ]}
+          ]
+        }
       ]
     }
   },

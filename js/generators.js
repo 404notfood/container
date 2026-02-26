@@ -73,6 +73,31 @@ const Generators = {
       ssl: document.querySelector('input[name="ssl"]:checked').value,
       nginxSocket: document.getElementById('enableNginxSocket').checked,
 
+      // Ports
+      httpPort: document.getElementById('httpPort').value || '80',
+      httpsPort: document.getElementById('httpsPort').value || '443',
+      traefikDashPort: document.getElementById('traefikDashPort').value || '8080',
+      nodePort: document.getElementById('nodePort').value || '3000',
+      pythonPort: document.getElementById('pythonPort').value || '8000',
+      javaPort: document.getElementById('javaPort').value || '8080',
+      mysqlPort: document.getElementById('mysqlPort').value || '3306',
+      mariadbPort: document.getElementById('mariadbPort').value || '3306',
+      postgresPort: document.getElementById('postgresPort').value || '5432',
+      mongoPort: document.getElementById('mongoPort').value || '27017',
+      redisPort: document.getElementById('redisPort').value || '6379',
+      memcachedPort: document.getElementById('memcachedPort').value || '11211',
+      rabbitmqPort: document.getElementById('rabbitmqPort').value || '5672',
+      rabbitmqUiPort: document.getElementById('rabbitmqUiPort').value || '15672',
+      adminerPort: document.getElementById('adminerPort').value || '8081',
+      phpmyadminPort: document.getElementById('phpmyadminPort').value || '8082',
+      pgadminPort: document.getElementById('pgadminPort').value || '8083',
+      mongoexpressPort: document.getElementById('mongoexpressPort').value || '8084',
+      mailpitSmtpPort: document.getElementById('mailpitSmtpPort').value || '1025',
+      mailpitUiPort: document.getElementById('mailpitUiPort').value || '8025',
+      minioPort: document.getElementById('minioPort').value || '9000',
+      minioConsolePort: document.getElementById('minioConsolePort').value || '9001',
+      elasticsearchPort: document.getElementById('elasticsearchPort').value || '9200',
+
       // Backend
       php: document.getElementById('enablePhp').checked,
       phpVersion: document.getElementById('phpVersion').value,
@@ -164,24 +189,24 @@ const Generators = {
     if (config.java) compose += Templates.composeJava(config);
 
     // Databases
-    if (config.mysql) compose += Templates.composeMysql();
-    if (config.mariadb) compose += Templates.composeMariadb();
-    if (config.postgres) compose += Templates.composePostgres();
-    if (config.mongo) compose += Templates.composeMongo();
+    if (config.mysql) compose += Templates.composeMysql(config);
+    if (config.mariadb) compose += Templates.composeMariadb(config);
+    if (config.postgres) compose += Templates.composePostgres(config);
+    if (config.mongo) compose += Templates.composeMongo(config);
 
     // Cache & Queue
-    if (config.redis) compose += Templates.composeRedis();
-    if (config.memcached) compose += Templates.composeMemcached();
-    if (config.rabbitmq) compose += Templates.composeRabbitmq();
+    if (config.redis) compose += Templates.composeRedis(config);
+    if (config.memcached) compose += Templates.composeMemcached(config);
+    if (config.rabbitmq) compose += Templates.composeRabbitmq(config);
 
     // Tools
-    if (config.adminer) compose += Templates.composeAdminer();
+    if (config.adminer) compose += Templates.composeAdminer(config);
     if (config.phpmyadmin) compose += Templates.composePhpmyadmin(config);
-    if (config.pgadmin) compose += Templates.composePgadmin();
-    if (config.mongoexpress) compose += Templates.composeMongoexpress();
-    if (config.mailpit) compose += Templates.composeMailpit();
-    if (config.minio) compose += Templates.composeMinio();
-    if (config.elasticsearch) compose += Templates.composeElasticsearch();
+    if (config.pgadmin) compose += Templates.composePgadmin(config);
+    if (config.mongoexpress) compose += Templates.composeMongoexpress(config);
+    if (config.mailpit) compose += Templates.composeMailpit(config);
+    if (config.minio) compose += Templates.composeMinio(config);
+    if (config.elasticsearch) compose += Templates.composeElasticsearch(config);
 
     if (config.ssl === 'letsencrypt') compose += Templates.composeCertbot();
 

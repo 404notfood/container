@@ -34,13 +34,13 @@ Object.assign(Templates, {
     if (config.redis) services.push('- **Redis 7**');
     if (config.memcached) services.push('- **Memcached**');
     if (config.rabbitmq) services.push('- **RabbitMQ**');
-    if (config.adminer) services.push('- **Adminer** (:8081)');
-    if (config.phpmyadmin) services.push('- **phpMyAdmin** (:8082)');
-    if (config.pgadmin) services.push('- **pgAdmin** (:8083)');
-    if (config.mongoexpress) services.push('- **Mongo Express** (:8084)');
-    if (config.mailpit) services.push('- **Mailpit** (SMTP :1025, UI :8025)');
-    if (config.minio) services.push('- **MinIO** (API :9000, Console :9001)');
-    if (config.elasticsearch) services.push('- **Elasticsearch 8** (:9200)');
+    if (config.adminer) services.push('- **Adminer** (:' + config.adminerPort + ')');
+    if (config.phpmyadmin) services.push('- **phpMyAdmin** (:' + config.phpmyadminPort + ')');
+    if (config.pgadmin) services.push('- **pgAdmin** (:' + config.pgadminPort + ')');
+    if (config.mongoexpress) services.push('- **Mongo Express** (:' + config.mongoexpressPort + ')');
+    if (config.mailpit) services.push('- **Mailpit** (SMTP :' + config.mailpitSmtpPort + ', UI :' + config.mailpitUiPort + ')');
+    if (config.minio) services.push('- **MinIO** (API :' + config.minioPort + ', Console :' + config.minioConsolePort + ')');
+    if (config.elasticsearch) services.push('- **Elasticsearch 8** (:' + config.elasticsearchPort + ')');
     md += services.join('\n') + '\n';
 
     md += `\n## Environnement de développement\n\n`;
@@ -110,14 +110,14 @@ Object.assign(Templates, {
     md += `\n## Access\n\n`;
     const proto = config.ssl !== 'none' ? 'https' : 'http';
     md += `- App: ${proto}://${config.domain || 'localhost'}\n`;
-    if (config.adminer) md += `- Adminer: http://localhost:8081\n`;
-    if (config.phpmyadmin) md += `- phpMyAdmin: http://localhost:8082\n`;
-    if (config.pgadmin) md += `- pgAdmin: http://localhost:8083\n`;
-    if (config.mongoexpress) md += `- Mongo Express: http://localhost:8084\n`;
-    if (config.mailpit) md += `- Mailpit: http://localhost:8025\n`;
-    if (config.minio) md += `- MinIO Console: http://localhost:9001\n`;
-    if (config.rabbitmq) md += `- RabbitMQ: http://localhost:15672\n`;
-    if (config.webserver === 'traefik') md += `- Traefik: http://localhost:8080\n`;
+    if (config.adminer) md += `- Adminer: http://localhost:${config.adminerPort}\n`;
+    if (config.phpmyadmin) md += `- phpMyAdmin: http://localhost:${config.phpmyadminPort}\n`;
+    if (config.pgadmin) md += `- pgAdmin: http://localhost:${config.pgadminPort}\n`;
+    if (config.mongoexpress) md += `- Mongo Express: http://localhost:${config.mongoexpressPort}\n`;
+    if (config.mailpit) md += `- Mailpit: http://localhost:${config.mailpitUiPort}\n`;
+    if (config.minio) md += `- MinIO Console: http://localhost:${config.minioConsolePort}\n`;
+    if (config.rabbitmq) md += `- RabbitMQ: http://localhost:${config.rabbitmqUiPort}\n`;
+    if (config.webserver === 'traefik') md += `- Traefik: http://localhost:${config.traefikDashPort}\n`;
 
     return md;
   }

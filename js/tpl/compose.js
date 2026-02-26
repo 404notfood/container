@@ -10,8 +10,8 @@ Object.assign(Templates, {
 
   composeNginx(config) {
     const ports = config.ssl !== 'none'
-      ? `    ports:\n      - "80:80"\n      - "443:443"\n`
-      : `    ports:\n      - "80:80"\n`;
+      ? `    ports:\n      - "${config.httpPort}:80"\n      - "${config.httpsPort}:443"\n`
+      : `    ports:\n      - "${config.httpPort}:80"\n`;
     const volumes = [`      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro`];
     if (config.php) volumes.push(`      - ./src:/var/www/html`);
     if (config.python) volumes.push(`      - ./src:/app`);
@@ -36,8 +36,8 @@ Object.assign(Templates, {
 
   composeApache(config) {
     const ports = config.ssl !== 'none'
-      ? `    ports:\n      - "80:80"\n      - "443:443"\n`
-      : `    ports:\n      - "80:80"\n`;
+      ? `    ports:\n      - "${config.httpPort}:80"\n      - "${config.httpsPort}:443"\n`
+      : `    ports:\n      - "${config.httpPort}:80"\n`;
     const volumes = [
       `      - ./apache/vhost.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf:ro`,
       `      - ./src:/var/www/html`
@@ -66,7 +66,7 @@ Object.assign(Templates, {
     if (config.node) depends.push('node');
     if (config.python) depends.push('python');
     let block = `  caddy:\n    image: caddy:2-alpine\n    container_name: \${PROJECT_NAME}-caddy\n`;
-    block += `    ports:\n      - "80:80"\n      - "443:443"\n`;
+    block += `    ports:\n      - "${config.httpPort}:80"\n      - "${config.httpsPort}:443"\n`;
     block += `    volumes:\n${volumes.join('\n')}\n`;
     if (depends.length) block += `    depends_on:\n${depends.map(d => `      - ${d}`).join('\n')}\n`;
     block += `    networks:\n      - app-network\n    restart: unless-stopped\n`;
@@ -75,7 +75,7 @@ Object.assign(Templates, {
 
   composeTraefik(config) {
     let block = `  traefik:\n    image: traefik:v3.0\n    container_name: \${PROJECT_NAME}-traefik\n`;
-    block += `    ports:\n      - "80:80"\n      - "443:443"\n      - "8080:8080"\n`;
+    block += `    ports:\n      - "${config.httpPort}:80"\n      - "${config.httpsPort}:443"\n      - "${config.traefikDashPort}:8080"\n`;
     block += `    volumes:\n`;
     block += `      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro\n`;
     block += `      - /var/run/docker.sock:/var/run/docker.sock:ro\n`;
@@ -111,7 +111,7 @@ Object.assign(Templates, {
     if (config.mongo) depends.push('mongo');
     let ports = '';
     if (config.webserver === 'none') {
-      ports = `    ports:\n      - "3000:3000"\n`;
+      ports = `    ports:\n      - "${config.nodePort}:3000"\n`;
     } else {
       ports = `    expose:\n      - "3000"\n`;
     }
@@ -133,7 +133,7 @@ Object.assign(Templates, {
     if (config.mongo) depends.push('mongo');
     let ports = '';
     if (config.webserver === 'none') {
-      ports = `    ports:\n      - "8000:8000"\n`;
+      ports = `    ports:\n      - "${config.pythonPort}:8000"\n`;
     } else {
       ports = `    expose:\n      - "8000"\n`;
     }
@@ -155,7 +155,7 @@ Object.assign(Templates, {
     if (config.mongo) depends.push('mongo');
     let ports = '';
     if (config.webserver === 'none') {
-      ports = `    ports:\n      - "8080:8080"\n`;
+      ports = `    ports:\n      - "${config.javaPort}:8080"\n`;
     } else {
       ports = `    expose:\n      - "8080"\n`;
     }
@@ -188,12 +188,12 @@ Object.assign(Templates, {
     return `  redis:\n    image: redis:7-alpine\n    container_name: \${PROJECT_NAME}-redis\n    command: redis-server --requirepass "\${REDIS_PASSWORD}"\n    ports:\n      - "\${REDIS_PORT:-6379}:6379"\n    environment:\n      - REDIS_PASSWORD=\${REDIS_PASSWORD}\n    volumes:\n      - redis-data:/data\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
-  composeMemcached() {
-    return `  memcached:\n    image: memcached:1-alpine\n    container_name: \${PROJECT_NAME}-memcached\n    ports:\n      - "11211:11211"\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
+  composeMemcached(config) {
+    return `  memcached:\n    image: memcached:1-alpine\n    container_name: \${PROJECT_NAME}-memcached\n    ports:\n      - "${config.memcachedPort}:11211"\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
-  composeRabbitmq() {
-    return `  rabbitmq:\n    image: rabbitmq:3-management-alpine\n    container_name: \${PROJECT_NAME}-rabbitmq\n    ports:\n      - "5672:5672"\n      - "15672:15672"\n    environment:\n      RABBITMQ_DEFAULT_USER: \${RABBITMQ_USER:-guest}\n      RABBITMQ_DEFAULT_PASS: \${RABBITMQ_PASSWORD:-guest}\n    volumes:\n      - rabbitmq-data:/var/lib/rabbitmq\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
+  composeRabbitmq(config) {
+    return `  rabbitmq:\n    image: rabbitmq:3-management-alpine\n    container_name: \${PROJECT_NAME}-rabbitmq\n    ports:\n      - "${config.rabbitmqPort}:5672"\n      - "${config.rabbitmqUiPort}:15672"\n    environment:\n      RABBITMQ_DEFAULT_USER: \${RABBITMQ_USER:-guest}\n      RABBITMQ_DEFAULT_PASS: \${RABBITMQ_PASSWORD:-guest}\n    volumes:\n      - rabbitmq-data:/var/lib/rabbitmq\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
   composeAdminer() {
@@ -217,12 +217,12 @@ Object.assign(Templates, {
     return `  mailpit:\n    image: axllent/mailpit:latest\n    container_name: \${PROJECT_NAME}-mailpit\n    ports:\n      - "\${MAILPIT_SMTP:-1025}:1025"\n      - "\${MAILPIT_UI:-8025}:8025"\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
-  composeMinio() {
-    return `  minio:\n    image: minio/minio:latest\n    container_name: \${PROJECT_NAME}-minio\n    ports:\n      - "9000:9000"\n      - "9001:9001"\n    environment:\n      MINIO_ROOT_USER: \${MINIO_USER:-minioadmin}\n      MINIO_ROOT_PASSWORD: \${MINIO_PASSWORD:-minioadmin}\n    volumes:\n      - minio-data:/data\n    command: server /data --console-address ":9001"\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
+  composeMinio(config) {
+    return `  minio:\n    image: minio/minio:latest\n    container_name: \${PROJECT_NAME}-minio\n    ports:\n      - "${config.minioPort}:9000"\n      - "${config.minioConsolePort}:9001"\n    environment:\n      MINIO_ROOT_USER: \${MINIO_USER:-minioadmin}\n      MINIO_ROOT_PASSWORD: \${MINIO_PASSWORD:-minioadmin}\n    volumes:\n      - minio-data:/data\n    command: server /data --console-address ":9001"\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
-  composeElasticsearch() {
-    return `  elasticsearch:\n    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0\n    container_name: \${PROJECT_NAME}-elasticsearch\n    ports:\n      - "9200:9200"\n    environment:\n      - discovery.type=single-node\n      - xpack.security.enabled=true\n      - ELASTIC_PASSWORD=\${ELASTIC_PASSWORD}\n      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"\n    volumes:\n      - elasticsearch-data:/usr/share/elasticsearch/data\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
+  composeElasticsearch(config) {
+    return `  elasticsearch:\n    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0\n    container_name: \${PROJECT_NAME}-elasticsearch\n    ports:\n      - "${config.elasticsearchPort}:9200"\n    environment:\n      - discovery.type=single-node\n      - xpack.security.enabled=true\n      - ELASTIC_PASSWORD=\${ELASTIC_PASSWORD}\n      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"\n    volumes:\n      - elasticsearch-data:/usr/share/elasticsearch/data\n    networks:\n      - app-network\n    restart: unless-stopped\n`;
   },
 
   composeCertbot() {

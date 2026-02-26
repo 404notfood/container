@@ -10,7 +10,7 @@
   margin-bottom: .35rem;
 }
 .optional { color: var(--text-muted); font-weight: 400; font-size: .75rem; }
-input[type="text"], select {
+input[type="text"], input[type="number"], select {
   width: 100%;
   padding: .5rem .75rem;
   background: var(--bg-input);
@@ -20,7 +20,7 @@ input[type="text"], select {
   font-size: .9rem;
   transition: border-color .2s, box-shadow .2s;
 }
-input[type="text"]:focus, select:focus {
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(88,166,255,.15);
@@ -29,6 +29,8 @@ input[type="text"].field-invalid {
   border-color: var(--red);
   box-shadow: 0 0 0 3px rgba(248,81,73,.12);
 }
+.port-row { margin-top: .5rem; }
+.form-group-port { min-width: 100px; flex: 0 1 120px; }
 select { cursor: pointer; }
 
 .field-error {
