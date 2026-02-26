@@ -1,83 +1,150 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Générateur de stack Docker/Podman — configuration complète générée côté client, aucune donnée envoyée au serveur." />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Générateur de stack Docker/Podman — configuration complète générée côté client, aucune donnée envoyée au serveur."
+        />
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Container Stack Generator" />
-    <meta property="og:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks (WordPress, Laravel, Next.js, Django, etc.). Configuration générée côté client pour une sécurité maximale." />
-    <meta property="og:site_name" content="Container Stack Generator" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Container Stack Generator" />
-    <meta name="twitter:description" content="Générateur de stack Docker/Podman complet avec support de multiples frameworks." />
+        <!-- Open Graph / Social Media -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Container Stack Generator" />
+        <meta
+            property="og:description"
+            content="Générateur de stack Docker/Podman complet avec support de multiples frameworks (WordPress, Laravel, Next.js, Django, etc.). Configuration générée côté client pour une sécurité maximale."
+        />
+        <meta property="og:site_name" content="Container Stack Generator" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Container Stack Generator" />
+        <meta
+            name="twitter:description"
+            content="Générateur de stack Docker/Podman complet avec support de multiples frameworks."
+        />
 
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <!-- Security Headers -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+        />
+        <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+        <meta http-equiv="X-Frame-Options" content="DENY" />
+        <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-    <title>Container Stack Generator</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olWTTB9kLSNtxK9VHJ1OHxQVvWLVPzTlY+Ln+GqTHd/VvtDsKzACVnEN8TYLdPAQ0tnQmP0EvQKHrH2aBgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="js/vendor.js"></script>
-</head>
-<body>
-    <header>
-        <div class="header-inner">
-            <div class="logo">
-                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="3" />
-                    <path d="M7 8h10M7 12h10M7 16h6" />
-                </svg>
-                <h1>Container Stack Generator</h1>
-            </div>
-            <span class="badge" id="appVersion"></span>
-            <div class="header-actions">
-                <div class="progress-bar-wrap" id="headerProgress">
-                    <span class="progress-text" id="progressText">0 / 11 sections</span>
-                    <div class="progress-track">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" id="btnDownloadHeader" aria-label="Télécharger la configuration ZIP">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                        <polyline points="7 10 12 15 17 10" />
-                        <line x1="12" y1="15" x2="12" y2="3" />
+        <title>Générateur de Conteneurs Docker/Podman</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+            integrity="sha512-rO+olWTTB9kLSNtxK9VHJ1OHxQVvWLVPzTlY+Ln+GqTHd/VvtDsKzACVnEN8TYLdPAQ0tnQmP0EvQKHrH2aBgw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <script src="js/vendor.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="header-inner">
+                <div class="logo">
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="32"
+                        height="32"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                    >
+                        <rect x="2" y="2" width="20" height="20" rx="3" />
+                        <path d="M7 8h10M7 12h10M7 16h6" />
                     </svg>
-                    <span class="btn-label">Télécharger ZIP</span>
-                </button>
+                    <h1>Générateur de containeur Docker/Podman</h1>
+                </div>
+                <span class="badge" id="appVersion"></span>
+                <div class="header-actions">
+                    <div class="progress-bar-wrap" id="headerProgress">
+                        <span class="progress-text" id="progressText"
+                            >0 / 11 sections</span
+                        >
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <button
+                        class="btn btn-primary"
+                        id="btnDownloadHeader"
+                        aria-label="Télécharger la configuration ZIP"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            aria-hidden="true"
+                        >
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span class="btn-label">Télécharger ZIP</span>
+                    </button>
+                </div>
             </div>
+        </header>
+
+        <div class="content-area">
+            <nav
+                class="sidebar-nav"
+                id="sidebarNav"
+                aria-label="Navigation des sections"
+            >
+                <h3 class="sidebar-title">Sections</h3>
+                <ul class="sidebar-nav-list" id="sidebarNavList"></ul>
+            </nav>
+
+            <button
+                class="sidebar-mobile-toggle"
+                id="sidebarMobileToggle"
+                aria-label="Afficher/masquer la navigation"
+                aria-expanded="false"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                >
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <main id="mainContent"></main>
         </div>
-    </header>
 
-    <div class="content-area">
-        <nav class="sidebar-nav" id="sidebarNav" aria-label="Navigation des sections">
-            <h3 class="sidebar-title">Sections</h3>
-            <ul class="sidebar-nav-list" id="sidebarNavList"></ul>
-        </nav>
+        <footer>
+            <p>
+                Container Stack Generator by
+                <a
+                    href="https://404notfood.fr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Laurent 404NotFood</a
+                >
+                &mdash; Tous les fichiers sont générés côté client, rien n'est
+                envoyé à un serveur.
+            </p>
+        </footer>
 
-        <button class="sidebar-mobile-toggle" id="sidebarMobileToggle" aria-label="Afficher/masquer la navigation" aria-expanded="false">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-
-        <main id="mainContent"></main>
-    </div>
-
-    <footer>
-        <p>Container Stack Generator &mdash; Tous les fichiers sont générés côté client, rien n'est envoyé à un serveur.</p>
-    </footer>
-
-    <script src="js/ui-builder.js"></script>
-    <script src="js/index.js"></script>
-</body>
+        <script src="js/ui-builder.js"></script>
+        <script src="js/index.js"></script>
+    </body>
 </html>
